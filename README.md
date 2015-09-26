@@ -1,3 +1,0 @@
-# chessEngine
-Chess engine
-test
