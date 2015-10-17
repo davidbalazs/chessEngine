@@ -1,6 +1,7 @@
 package com.davidbalazs.chess.model;
 
 /**
+ *
  * Created by David on 9/29/2015.
  */
 public class FriendlyPiecePosition {

@@ -1,8 +1,10 @@
 package com.davidbalazs.chess;
 
+import com.davidbalazs.chess.constants.BitboardConstants;
 import com.davidbalazs.chess.model.ChessPosition;
-import com.davidbalazs.chess.service.ChessBoardService;
-import com.davidbalazs.chess.service.impl.DefaultChessBoardService;
+import com.davidbalazs.chess.movegenerator.impl.DefaultMoveGenerator;
+import com.davidbalazs.chess.service.FriendlyChessBoardService;
+import com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,9 +19,9 @@ public class Main {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        ChessBoardService chessBoardService = applicationContext.getBean("chessBoardService", DefaultChessBoardService.class);
-        ChessPosition chessPosition = chessBoardService.initializeChessBoard();
-        System.out.println(Long.toBinaryString(chessPosition.getBlackRooks()));
-        System.out.println(chessBoardService.getFriendlyChessPosition(chessPosition));
+        FriendlyChessBoardService friendlyChessBoardService = applicationContext.getBean("friendlyChessBoardService", DefaultFriendlyChessBoardService.class);
+        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard();
+        System.out.println(Long.toBinaryString(BitboardConstants.FILE_H));
+        System.out.println(friendlyChessBoardService.getFriendlyChessPosition(chessPosition));
     }
 }

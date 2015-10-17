@@ -3,6 +3,7 @@ package com.davidbalazs.chess.model;
 import java.util.Arrays;
 
 /**
+ *
  * Created by David on 9/29/2015.
  */
 public class FriendlyChessPosition {

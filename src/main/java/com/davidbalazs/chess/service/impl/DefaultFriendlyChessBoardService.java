@@ -4,7 +4,7 @@ import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.model.FriendlyChessPosition;
 import com.davidbalazs.chess.model.FriendlyPiecePosition;
 import com.davidbalazs.chess.model.FriendlyPieceType;
-import com.davidbalazs.chess.service.ChessBoardService;
+import com.davidbalazs.chess.service.FriendlyChessBoardService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +12,17 @@ import java.util.List;
 /**
  * Created by David on 9/28/2015.
  */
-public class DefaultChessBoardService implements ChessBoardService {
+public class DefaultFriendlyChessBoardService implements FriendlyChessBoardService {
 
     public ChessPosition initializeChessBoard(List<FriendlyPiecePosition> piecePositionList) {
         ChessPosition chessPosition = new ChessPosition();
         for (FriendlyPiecePosition piecePosition : piecePositionList) {
-            long position = (long) Math.pow(2, piecePosition.getCoordinateX() * 8 + piecePosition.getCoordinateY());
+            long position;
+            if (piecePosition.getCoordinateX() == 7 && piecePosition.getCoordinateY() == 7) {
+                position = Long.MIN_VALUE;
+            } else {
+                position = (long) Math.pow(2, piecePosition.getCoordinateX() * 8 + piecePosition.getCoordinateY());
+            }
             switch (piecePosition.getPieceType()) {
                 case WHITE_PAWN:
                     chessPosition.setWhitePawns(chessPosition.getWhitePawns() + position);
@@ -112,9 +117,9 @@ public class DefaultChessBoardService implements ChessBoardService {
                 friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, coordinateX, coordinateY));
             }
 
-//            if ((blackRooksPosition & 1L) != 0) {
-//                friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, coordinateX, coordinateY));
-//            }
+            if ((blackRooksPosition & 1L) != 0) {
+                friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, coordinateX, coordinateY));
+            }
 
             if ((blackQueensPosition & 1L) != 0) {
                 friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_QUEEN, coordinateX, coordinateY));
@@ -129,12 +134,20 @@ public class DefaultChessBoardService implements ChessBoardService {
             blackPawnsPosition = blackPawnsPosition >> 1;
             blackKnightsPosition = blackKnightsPosition >> 1;
             blackBishopsPosition = blackBishopsPosition >> 1;
-            blackRooksPosition = blackRooksPosition >>> 1;
+            blackRooksPosition = blackRooksPosition >> 1;
             blackQueensPosition = blackQueensPosition >> 1;
 
         }
-        friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, chessPosition.getWhiteKing() / 8, chessPosition.getWhiteKing() % 8));
-        friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, chessPosition.getBlackKing() / 8, chessPosition.getBlackKing() % 8));
+
+        Byte whiteKingPosition = chessPosition.getWhiteKing();
+        if (whiteKingPosition != null) {
+            friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, whiteKingPosition / 8, whiteKingPosition % 8));
+        }
+
+        Byte blackKingPosition = chessPosition.getBlackKing();
+        if (blackKingPosition != null) {
+            friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, blackKingPosition / 8, blackKingPosition % 8));
+        }
         return friendlyChessPosition;
     }
 

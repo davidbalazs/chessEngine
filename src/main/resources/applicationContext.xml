@@ -5,7 +5,20 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
-    <alias name="defaultChessBoardService" alias="chessBoardService"/>
-    <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultChessBoardService">
+    <alias name="defaultChessBoardService" alias="friendlyChessBoardService"/>
+    <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService">
     </bean>
+
+    <alias name="defaultMoveGenerator" alias="moveGenerator"/>
+    <bean id="defaultMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.DefaultMoveGenerator">
+        <property name="moveGenerators">
+            <list>
+                <ref bean="whitePawnMoveGenerator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="whitePawnMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.WhitePawnMoveGenerator"/>
+
+
 </beans>

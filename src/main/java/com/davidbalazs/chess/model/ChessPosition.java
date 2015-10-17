@@ -14,8 +14,8 @@ public class ChessPosition {
     private long blackBishops;
     private long blackRooks;
     private long blackQueens;
-    private byte whiteKing;
-    private byte blackKing;
+    private Byte whiteKing;
+    private Byte blackKing;
 
     public long getWhitePawns() {
         return whitePawns;
@@ -97,7 +97,7 @@ public class ChessPosition {
         this.blackQueens = blackQueens;
     }
 
-    public byte getWhiteKing() {
+    public Byte getWhiteKing() {
         return whiteKing;
     }
 
@@ -105,7 +105,7 @@ public class ChessPosition {
         this.whiteKing = whiteKing;
     }
 
-    public byte getBlackKing() {
+    public Byte getBlackKing() {
         return blackKing;
     }
 
