@@ -7,11 +7,17 @@ import com.davidbalazs.chess.model.ChessPosition;
  */
 public class BitBoardProcessor {
     public long getEmptyPositions(ChessPosition chessPosition) {
-        return chessPosition.getWhitePawns() |
+        return ~(chessPosition.getWhitePawns() |
                 chessPosition.getWhiteBishops() |
                 chessPosition.getWhiteKnights() |
                 chessPosition.getWhiteRooks() |
-                chessPosition.getWhiteQueens();
+                chessPosition.getWhiteQueens() |
+                chessPosition.getBlackPawns() |
+                chessPosition.getBlackBishops() |
+                chessPosition.getBlackKnights() |
+                chessPosition.getBlackRooks() |
+                chessPosition.getBlackQueens()
+        );
         //TODO add kings positions as well.
     }
 }
