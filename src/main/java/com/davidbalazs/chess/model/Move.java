@@ -30,4 +30,55 @@ public class Move {
         this.isCheck = isCheck;
         this.moveType = moveType;
     }
+
+    public FriendlyPiecePosition getInitialPosition() {
+        return initialPosition;
+    }
+
+    public void setInitialPosition(FriendlyPiecePosition initialPosition) {
+        this.initialPosition = initialPosition;
+    }
+
+    public FriendlyPiecePosition getFinalPosition() {
+        return finalPosition;
+    }
+
+    public void setFinalPosition(FriendlyPiecePosition finalPosition) {
+        this.finalPosition = finalPosition;
+    }
+
+    public boolean isCapture() {
+        return isCapture;
+    }
+
+    public void setIsCapture(boolean isCapture) {
+        this.isCapture = isCapture;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    public MoveType getMoveType() {
+        return moveType;
+    }
+
+    public void setMoveType(MoveType moveType) {
+        this.moveType = moveType;
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "initial=" + initialPosition +
+                ", final=" + finalPosition +
+                ", isCapture=" + isCapture +
+                ", isCheck=" + isCheck +
+                ", moveType=" + moveType +
+                '}';
+    }
 }

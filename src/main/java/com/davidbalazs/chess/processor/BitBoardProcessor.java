@@ -20,4 +20,12 @@ public class BitBoardProcessor {
         );
         //TODO add kings positions as well.
     }
+
+    public long getBlackPiecesBitboard(ChessPosition chessPosition) {
+        return chessPosition.getBlackPawns() |
+                chessPosition.getBlackBishops() |
+                chessPosition.getBlackKnights() |
+                chessPosition.getBlackRooks() |
+                chessPosition.getBlackQueens();
+    }
 }

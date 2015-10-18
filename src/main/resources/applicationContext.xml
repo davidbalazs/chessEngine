@@ -9,16 +9,19 @@
     <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService">
     </bean>
 
-    <alias name="defaultMoveGenerator" alias="moveGenerator"/>
-    <bean id="defaultMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.DefaultMoveGenerator">
-        <property name="moveGenerators">
+    <alias name="defaultPossibleMovesGenerator" alias="possibleMovesGenerator"/>
+    <bean id="defaultPossibleMovesGenerator" class="com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator">
+        <property name="possibleMoveGenerators">
             <list>
-                <ref bean="whitePawnMoveGenerator"/>
+                <ref bean="pawnMoveGenerator"/>
             </list>
         </property>
     </bean>
 
-    <bean id="whitePawnMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.WhitePawnMoveGenerator"/>
+    <bean id="pawnMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.PawnPossibleMovesGenerator">
+        <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+    </bean>
 
+    <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>
 
 </beans>

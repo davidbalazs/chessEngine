@@ -21,7 +21,7 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
             if (piecePosition.getCoordinateX() == 7 && piecePosition.getCoordinateY() == 7) {
                 position = Long.MIN_VALUE;
             } else {
-                position = (long) Math.pow(2, piecePosition.getCoordinateX() * 8 + piecePosition.getCoordinateY());
+                position = (long) Math.pow(2, piecePosition.getCoordinateY() * 8 + piecePosition.getCoordinateX());
             }
             switch (piecePosition.getPieceType()) {
                 case WHITE_PAWN:
@@ -55,10 +55,10 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
                     chessPosition.setBlackQueens(chessPosition.getBlackQueens() + position);
                     break;
                 case WHITE_KING:
-                    chessPosition.setWhiteKing((byte) (piecePosition.getCoordinateX() * 8 + piecePosition.getCoordinateY()));
+                    chessPosition.setWhiteKing((byte) (piecePosition.getCoordinateY() * 8 + piecePosition.getCoordinateX()));
                     break;
                 case BLACK_KING:
-                    chessPosition.setBlackKing((byte) (piecePosition.getCoordinateX() * 8 + piecePosition.getCoordinateY()));
+                    chessPosition.setBlackKing((byte) (piecePosition.getCoordinateY() * 8 + piecePosition.getCoordinateX()));
                     break;
             }
         }
@@ -157,38 +157,38 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
 
     private List<FriendlyPiecePosition> getInitialChessBoardPosition() {
         return Arrays.asList(
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 0, 1),
                 new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 1),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 2),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 3),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 4),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 5),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 6),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 1, 7),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_KNIGHT, 0, 1),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_KNIGHT, 0, 6),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 0, 2),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 0, 5),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 2, 1),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 3, 1),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 4, 1),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 5, 1),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 6, 1),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 7, 1),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_KNIGHT, 1, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_KNIGHT, 6, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 2, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 5, 0),
                 new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 0, 0),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 0, 7),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_QUEEN, 0, 3),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, 0, 4),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 7, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_QUEEN, 3, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, 4, 0),
 
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 0),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 1),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 2),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 3),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 4),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 5),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 0, 6),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 1, 6),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 2, 6),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 3, 6),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 4, 6),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 5, 6),
                 new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 6),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 7),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_KNIGHT, 7, 1),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_KNIGHT, 7, 6),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 7, 2),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 7, 5),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, 7, 0),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 7, 6),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_KNIGHT, 1, 7),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_KNIGHT, 6, 7),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 2, 7),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 5, 7),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, 0, 7),
                 new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, 7, 7),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_QUEEN, 7, 3),
-                new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, 7, 4));
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_QUEEN, 3, 7),
+                new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, 4, 7));
     }
 }

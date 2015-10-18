@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by David on 10/11/2015.
  */
-public interface MoveGenerator {
-    List<Move> generateMoves(ChessPosition chessPosition);
+public interface PossibleMovesGenerator {
+    List<Move> generateWhiteMoves(ChessPosition chessPosition);
+    List<Move> generateBlackMoves(ChessPosition chessPosition);
 }

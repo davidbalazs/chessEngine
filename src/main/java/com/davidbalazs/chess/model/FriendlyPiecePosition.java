@@ -41,4 +41,13 @@ public class FriendlyPiecePosition {
     public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
     }
+
+    @Override
+    public String toString() {
+        return "pos{" +
+                "piece=" + pieceType +
+                ", x=" + coordinateX +
+                ", y=" + coordinateY +
+                '}';
+    }
 }
