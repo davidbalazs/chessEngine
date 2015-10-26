@@ -16,14 +16,13 @@ public class Main {
 
     public static final Logger LOGGER = Logger.getLogger(Main.class);
 
-
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         FriendlyChessBoardService friendlyChessBoardService = applicationContext.getBean("friendlyChessBoardService", DefaultFriendlyChessBoardService.class);
-        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition1());
+        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition2());
         System.out.println(friendlyChessBoardService.getFriendlyChessPosition(chessPosition));
 
         MainPossibleMovesGenerator defaultMoveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
-        defaultMoveGenerator.generateWhiteMoves(chessPosition);
+        defaultMoveGenerator.generateBlackMoves(chessPosition);
     }
 }

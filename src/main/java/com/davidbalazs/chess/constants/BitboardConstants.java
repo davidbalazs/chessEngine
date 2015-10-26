@@ -9,4 +9,5 @@ public interface BitboardConstants {
     long RANK_8 = 0xff00000000000000L;
     long RANK_1 = 0x00000000000000ffL;
     long RANK_4 = 0x00000000ff000000L;
+    long RANK_5 = 0x000000ff00000000L;
 }

@@ -28,4 +28,12 @@ public class BitBoardProcessor {
                 chessPosition.getBlackRooks() |
                 chessPosition.getBlackQueens();
     }
+
+    public long getWhitePiecesBitboard(ChessPosition chessPosition) {
+        return chessPosition.getWhitePawns() |
+                chessPosition.getWhiteBishops() |
+                chessPosition.getWhiteKnights() |
+                chessPosition.getWhiteRooks() |
+                chessPosition.getWhiteQueens();
+    }
 }
