@@ -28,4 +28,8 @@ public class DummyChessPositions {
     public static List<FriendlyPiecePosition> dummyChessPosition2() {
         return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 0, 6), new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 1, 5), new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 2, 4));
     }
+
+    public static List<FriendlyPiecePosition> dummyChessPosition3() {
+        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.WHITE_KNIGHT, 0, 0));
+    }
 }

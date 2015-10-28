@@ -10,15 +10,22 @@
     </bean>
 
     <alias name="defaultPossibleMovesGenerator" alias="possibleMovesGenerator"/>
-    <bean id="defaultPossibleMovesGenerator" class="com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator">
+    <bean id="defaultPossibleMovesGenerator"
+          class="com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator">
         <property name="possibleMoveGenerators">
             <list>
-                <ref bean="pawnMoveGenerator"/>
+                <ref bean="pawnPossibleMoveGenerator"/>
+                <ref bean="knightPossibleMovesGenerator"/>
             </list>
         </property>
     </bean>
 
-    <bean id="pawnMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.PawnPossibleMovesGenerator">
+    <bean id="pawnPossibleMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.PawnPossibleMovesGenerator">
+        <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+    </bean>
+
+    <bean id="knightPossibleMovesGenerator"
+          class="com.davidbalazs.chess.movegenerator.impl.KnightPossibleMovesGenerator">
         <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
     </bean>
 
