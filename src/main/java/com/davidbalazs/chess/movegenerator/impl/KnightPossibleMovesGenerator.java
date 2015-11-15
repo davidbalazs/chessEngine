@@ -29,34 +29,34 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
 
     @Override
     public List<Move> generateWhiteMoves(ChessPosition chessPosition) {
-        return generatePossibleKnightMoves(chessPosition.getWhiteKnights(), bitBoardProcessor.getWhitePiecesBitboard(chessPosition));
+        return generatePossibleKnightMoves(chessPosition.getWhiteKnights(), bitBoardProcessor.getWhitePiecesBitboard(chessPosition), FriendlyPieceType.WHITE_KNIGHT);
     }
 
     @Override
     public List<Move> generateBlackMoves(ChessPosition chessPosition) {
-        return generatePossibleKnightMoves(chessPosition.getBlackKnights(), bitBoardProcessor.getBlackPiecesBitboard(chessPosition));
+        return generatePossibleKnightMoves(chessPosition.getBlackKnights(), bitBoardProcessor.getBlackPiecesBitboard(chessPosition), FriendlyPieceType.BLACK_KNIGHT);
     }
 
-    private List<Move> generatePossibleKnightMoves(long knightBitboard, long opponentOccupiedPositions) {
+    private List<Move> generatePossibleKnightMoves(long knightBitboard, long samePlayerOccupiedPositions, FriendlyPieceType knightColor) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
 
-        long seeKnightMoves = (knightBitboard >> 6) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~opponentOccupiedPositions;
-        long sseKnightMoves = (knightBitboard >> 15) & ~BitboardConstants.FILE_A & ~opponentOccupiedPositions;
-        long sswKnightMoves = (knightBitboard >> 17) & ~BitboardConstants.FILE_H & ~opponentOccupiedPositions;
-        long swwKnightMoves = (knightBitboard >> 10) & ~BitboardConstants.FILE_H & ~BitboardConstants.FILE_G & ~opponentOccupiedPositions;
-        long nwwKnightMoves = (knightBitboard << 6) & ~BitboardConstants.FILE_H & ~BitboardConstants.FILE_G & ~opponentOccupiedPositions;
-        long nnwKnightMoves = (knightBitboard << 15) & ~BitboardConstants.FILE_H & ~opponentOccupiedPositions;
-        long nneKnightMoves = (knightBitboard << 17) & ~BitboardConstants.FILE_A & ~opponentOccupiedPositions;
-        long neeKnightMoves = (knightBitboard << 10) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~opponentOccupiedPositions;
+        long seeKnightMoves = (knightBitboard >> 6) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~samePlayerOccupiedPositions;
+        long sseKnightMoves = (knightBitboard >> 15) & ~BitboardConstants.FILE_A & ~samePlayerOccupiedPositions;
+        long sswKnightMoves = (knightBitboard >> 17) & ~BitboardConstants.FILE_H & ~samePlayerOccupiedPositions;
+        long swwKnightMoves = (knightBitboard >> 10) & ~BitboardConstants.FILE_H & ~BitboardConstants.FILE_G & ~samePlayerOccupiedPositions;
+        long nwwKnightMoves = (knightBitboard << 6) & ~BitboardConstants.FILE_H & ~BitboardConstants.FILE_G & ~samePlayerOccupiedPositions;
+        long nnwKnightMoves = (knightBitboard << 15) & ~BitboardConstants.FILE_H & ~samePlayerOccupiedPositions;
+        long nneKnightMoves = (knightBitboard << 17) & ~BitboardConstants.FILE_A & ~samePlayerOccupiedPositions;
+        long neeKnightMoves = (knightBitboard << 10) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~samePlayerOccupiedPositions;
 
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, seeKnightMoves, -2, 1);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, sseKnightMoves, -1, 2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, sswKnightMoves, 1, 2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, swwKnightMoves, 2, 1);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, nwwKnightMoves, 2, -1);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, nnwKnightMoves, 1, -2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, nneKnightMoves, -1, -2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, FriendlyPieceType.WHITE_KNIGHT, neeKnightMoves, -2, -1);
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, seeKnightMoves, -2, 1);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, sseKnightMoves, -1, 2);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, sswKnightMoves, 1, 2);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, swwKnightMoves, 2, 1);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, nwwKnightMoves, 2, -1);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, nnwKnightMoves, 1, -2);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, nneKnightMoves, -1, -2);//
+        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, neeKnightMoves, -2, -1);
 
         return possibleMoves;
     }

@@ -16,6 +16,7 @@
             <list>
                 <ref bean="pawnPossibleMoveGenerator"/>
                 <ref bean="knightPossibleMovesGenerator"/>
+                <ref bean="rookPossibleMovesGenerator"/>
             </list>
         </property>
     </bean>
@@ -27,6 +28,17 @@
     <bean id="knightPossibleMovesGenerator"
           class="com.davidbalazs.chess.movegenerator.impl.KnightPossibleMovesGenerator">
         <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+    </bean>
+
+    <!--this should not be added directly to mainPossibleMovesGenerator, because it is a generic piece type. It should be used by rook and by queen move generators.-->
+    <bean id="lineSlidingPiecePossibleMovesGenerator"
+          class="com.davidbalazs.chess.movegenerator.impl.LineSlidingPiecePossibleMovesGenerator">
+        <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+    </bean>
+
+    <bean id="rookPossibleMovesGenerator"
+          class="com.davidbalazs.chess.movegenerator.impl.RookPossibleMovesGenerator">
+        <property name="lineSlidingPiecePossibleMovesGenerator" ref="lineSlidingPiecePossibleMovesGenerator"/>
     </bean>
 
     <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>

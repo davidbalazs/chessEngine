@@ -19,10 +19,10 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         FriendlyChessBoardService friendlyChessBoardService = applicationContext.getBean("friendlyChessBoardService", DefaultFriendlyChessBoardService.class);
-        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard();
+        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition4());
         System.out.println(friendlyChessBoardService.getFriendlyChessPosition(chessPosition));
 
         MainPossibleMovesGenerator defaultMoveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
-        defaultMoveGenerator.generateBlackMoves(chessPosition);
+        defaultMoveGenerator.generateWhiteMoves(chessPosition);
     }
 }
