@@ -55,10 +55,10 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
                     chessPosition.setBlackQueens(chessPosition.getBlackQueens() + position);
                     break;
                 case WHITE_KING:
-                    chessPosition.setWhiteKing((byte) (piecePosition.getCoordinateY() * 8 + piecePosition.getCoordinateX()));
+                    chessPosition.setWhiteKing(chessPosition.getWhiteKing() + position);
                     break;
                 case BLACK_KING:
-                    chessPosition.setBlackKing((byte) (piecePosition.getCoordinateY() * 8 + piecePosition.getCoordinateX()));
+                    chessPosition.setBlackKing(chessPosition.getBlackKing() + position);
                     break;
             }
         }
@@ -82,9 +82,17 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
         long blackBishopsPosition = chessPosition.getBlackBishops();
         long blackRooksPosition = chessPosition.getBlackRooks();
         long blackQueensPosition = chessPosition.getBlackQueens();
-
+        long whiteKingPosition = chessPosition.getWhiteKing();
+        long blackKingPosition = chessPosition.getBlackKing();
         for (int i = 0; i < 64; i++) {
             int coordinateX = i / 8, coordinateY = i % 8;
+            if ((whiteKingPosition & 1L) != 0) {
+                friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, coordinateX, coordinateY));
+            }
+            if ((blackKingPosition & 1L) != 0) {
+                friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, coordinateX, coordinateY));
+            }
+
             if ((whitePawnsPosition & 1L) != 0) {
                 friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, coordinateX, coordinateY));
             }
@@ -130,23 +138,14 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
             whiteBishopsPosition = whiteBishopsPosition >> 1;
             whiteRooksPosition = whiteRooksPosition >> 1;
             whiteQueensPosition = whiteQueensPosition >> 1;
+            whiteKingPosition = whiteKingPosition >> 1;
 
             blackPawnsPosition = blackPawnsPosition >> 1;
             blackKnightsPosition = blackKnightsPosition >> 1;
             blackBishopsPosition = blackBishopsPosition >> 1;
             blackRooksPosition = blackRooksPosition >> 1;
             blackQueensPosition = blackQueensPosition >> 1;
-
-        }
-
-        Byte whiteKingPosition = chessPosition.getWhiteKing();
-        if (whiteKingPosition != null) {
-            friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, whiteKingPosition / 8, whiteKingPosition % 8));
-        }
-
-        Byte blackKingPosition = chessPosition.getBlackKing();
-        if (blackKingPosition != null) {
-            friendlyChessPosition.setPiece(new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, blackKingPosition / 8, blackKingPosition % 8));
+            blackKingPosition = blackKingPosition >> 1;
         }
         return friendlyChessPosition;
     }
