@@ -6,8 +6,10 @@
     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
     <alias name="defaultChessBoardService" alias="friendlyChessBoardService"/>
-    <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService">
-    </bean>
+    <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService"/>
+
+    <alias name="defaultMoveService" alias="moveService"/>
+    <bean id="defaultMoveService" class="com.davidbalazs.chess.service.impl.DefaultMoveService"/>
 
     <alias name="defaultPossibleMovesGenerator" alias="possibleMovesGenerator"/>
     <bean id="defaultPossibleMovesGenerator"

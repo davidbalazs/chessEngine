@@ -20,8 +20,10 @@ public class Main {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         FriendlyChessBoardService friendlyChessBoardService = applicationContext.getBean("friendlyChessBoardService", DefaultFriendlyChessBoardService.class);
         ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard();
+
         System.out.println(friendlyChessBoardService.getFriendlyChessPosition(chessPosition));
 
+        friendlyChessBoardService.displayChessBoard(chessPosition);
         MainPossibleMovesGenerator defaultMoveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
         defaultMoveGenerator.generateWhiteMoves(chessPosition);
     }
