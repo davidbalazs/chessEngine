@@ -18,19 +18,21 @@
             <list>
                 <ref bean="pawnPossibleMoveGenerator"/>
                 <ref bean="knightPossibleMovesGenerator"/>
-                <ref bean="rookPossibleMovesGenerator"/>
-                <ref bean="kingPossibleMovesGenerator"/>
+                <!--<ref bean="rookPossibleMovesGenerator"/>-->
+                <!--<ref bean="kingPossibleMovesGenerator"/>-->
             </list>
         </property>
     </bean>
 
     <bean id="pawnPossibleMoveGenerator" class="com.davidbalazs.chess.movegenerator.impl.PawnPossibleMovesGenerator">
         <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+        <property name="moveService" ref="moveService"/>
     </bean>
 
     <bean id="knightPossibleMovesGenerator"
           class="com.davidbalazs.chess.movegenerator.impl.KnightPossibleMovesGenerator">
         <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+        <property name="moveService" ref="moveService"/>
     </bean>
 
     <!--this should not be added directly to mainPossibleMovesGenerator, because it is a generic piece type. It should be used by rook and by queen move generators.-->

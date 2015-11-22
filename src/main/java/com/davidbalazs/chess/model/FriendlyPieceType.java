@@ -37,11 +37,11 @@ public enum FriendlyPieceType {
     private char value; //TODO RENAME THIS
 
 
-    private FriendlyPieceType(char value) {
+    FriendlyPieceType(char value) {
         this.value = value;
     }
 
-    private FriendlyPieceType(char value, int numericalRepresentation) {
+    FriendlyPieceType(char value, int numericalRepresentation) {
         this.value = value;
         this.numericalRepresentation = numericalRepresentation;
     }

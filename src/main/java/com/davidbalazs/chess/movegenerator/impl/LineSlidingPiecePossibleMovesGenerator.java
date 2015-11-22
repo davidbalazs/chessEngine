@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * For sliding pieces.
@@ -36,7 +37,7 @@ public class LineSlidingPiecePossibleMovesGenerator implements PossibleMovesGene
     private BitBoardProcessor bitBoardProcessor;
 
     @Override
-    public List<Move> generateWhiteMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
         ArrayList<Move> generatedMoves = new ArrayList<>();
         long rookBitboard = chessPosition.getWhiteRooks();
         long blackPiecesBitboard = bitBoardProcessor.getBlackPiecesBitboard(chessPosition);
@@ -47,7 +48,7 @@ public class LineSlidingPiecePossibleMovesGenerator implements PossibleMovesGene
 
             }
         }
-        return Collections.emptyList();
+        return null;
     }
 
     private long horizontalAndVerticalMoves(int positionNumber, long opponentBitboard) {
@@ -59,7 +60,7 @@ public class LineSlidingPiecePossibleMovesGenerator implements PossibleMovesGene
     }
 
     @Override
-    public List<Move> generateBlackMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
         return null;
     }
 

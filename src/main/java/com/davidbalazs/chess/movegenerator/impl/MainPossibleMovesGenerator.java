@@ -5,20 +5,21 @@ import com.davidbalazs.chess.model.Move;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
- *
  * Created by David on 10/11/2015.
  */
 public class MainPossibleMovesGenerator implements PossibleMovesGenerator {
     List<PossibleMovesGenerator> possibleMoveGenerators;
 
     @Override
-    public List<Move> generateWhiteMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
         //todo: assertNotNull(possibleMoveGenerators);
 
-        List<Move> generatedMoves = new ArrayList<>();
+        TreeSet<Integer> generatedMoves = new TreeSet<Integer>(Collections.reverseOrder());
 
         for (PossibleMovesGenerator possibleMovesGenerator : possibleMoveGenerators) {
             generatedMoves.addAll(possibleMovesGenerator.generateWhiteMoves(chessPosition));
@@ -28,10 +29,10 @@ public class MainPossibleMovesGenerator implements PossibleMovesGenerator {
     }
 
     @Override
-    public List<Move> generateBlackMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
         //todo: assertNotNull(possibleMoveGenerators);
 
-        List<Move> generatedMoves = new ArrayList<>();
+        TreeSet<Integer> generatedMoves = new TreeSet<Integer>(Collections.reverseOrder());
 
         for (PossibleMovesGenerator possibleMovesGenerator : possibleMoveGenerators) {
             generatedMoves.addAll(possibleMovesGenerator.generateBlackMoves(chessPosition));

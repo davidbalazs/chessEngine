@@ -4,12 +4,14 @@ import com.davidbalazs.chess.constants.BitboardConstants;
 import com.davidbalazs.chess.model.*;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 import com.davidbalazs.chess.processor.BitBoardProcessor;
+import com.davidbalazs.chess.service.MoveService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * U64 noNoEa(U64 b) {return (b << 17) & notAFile ;} x
@@ -26,19 +28,20 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
     //TODO add capture moves
     public static final Logger LOGGER = Logger.getLogger(KnightPossibleMovesGenerator.class);
     private BitBoardProcessor bitBoardProcessor;
+    private MoveService moveService;
 
     @Override
-    public List<Move> generateWhiteMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
         return generatePossibleKnightMoves(chessPosition.getWhiteKnights(), bitBoardProcessor.getWhitePiecesBitboard(chessPosition), FriendlyPieceType.WHITE_KNIGHT);
     }
 
     @Override
-    public List<Move> generateBlackMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
         return generatePossibleKnightMoves(chessPosition.getBlackKnights(), bitBoardProcessor.getBlackPiecesBitboard(chessPosition), FriendlyPieceType.BLACK_KNIGHT);
     }
 
-    private List<Move> generatePossibleKnightMoves(long knightBitboard, long samePlayerOccupiedPositions, FriendlyPieceType knightColor) {
-        ArrayList<Move> possibleMoves = new ArrayList<>();
+    private TreeSet<Integer> generatePossibleKnightMoves(long knightBitboard, long samePlayerOccupiedPositions, FriendlyPieceType knightColor) {
+        TreeSet<Integer> possibleMoves = new TreeSet<Integer>(Collections.reverseOrder());
 
         long seeKnightMoves = (knightBitboard >> 6) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~samePlayerOccupiedPositions;
         long sseKnightMoves = (knightBitboard >> 15) & ~BitboardConstants.FILE_A & ~samePlayerOccupiedPositions;
@@ -61,15 +64,17 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
         return possibleMoves;
     }
 
-    private void populatePossibleMovesListFromBitboard(List<Move> possibleMoves, FriendlyPieceType pieceType, long possibleMovesBitboard, int distanceToInitialPositionX, int distanceToInitialPositionY) {
+    private void populatePossibleMovesListFromBitboard(TreeSet<Integer> possibleMoves, FriendlyPieceType pieceType, long possibleMovesBitboard, int distanceToInitialPositionX, int distanceToInitialPositionY) {
+        if (possibleMovesBitboard == 0) {
+            return;
+        }
+
         for (int i = 0; i < 64; i++) {
             if (((possibleMovesBitboard >> i) & 1L) == 1) {
-                Move move = new Move(
-                        new FriendlyPiecePosition(pieceType, i % 8 + distanceToInitialPositionX, i / 8 + distanceToInitialPositionY),
-                        new FriendlyPiecePosition(pieceType, i % 8, i / 8),
-                        false, false, MoveType.NONE);
-                possibleMoves.add(move);
-                LOGGER.info("new move:" + move);
+                int generatedMove = moveService.createMove(pieceType, new PiecePosition(i % 8 + distanceToInitialPositionX,
+                        i / 8 + distanceToInitialPositionY), new PiecePosition(i % 8, i / 8), false, false, null, null, null, false, false);
+                possibleMoves.add(generatedMove);
+                LOGGER.info("new move:" + moveService.getFriendlyFormat(generatedMove));
                 //TODO: instead of false, see if black king will be in check by this new pawn move.
             }
         }
@@ -78,5 +83,10 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
     @Required
     public void setBitBoardProcessor(BitBoardProcessor bitBoardProcessor) {
         this.bitBoardProcessor = bitBoardProcessor;
+    }
+
+    @Required
+    public void setMoveService(MoveService moveService) {
+        this.moveService = moveService;
     }
 }

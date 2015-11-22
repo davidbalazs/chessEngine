@@ -8,20 +8,22 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by David on 11/15/2015.
  */
 public class KingPossibleMovesGenerator implements PossibleMovesGenerator {
     private BitBoardProcessor bitBoardProcessor;
+
     @Override
-    public List<Move> generateWhiteMoves(ChessPosition chessPosition) {
-        return Collections.emptyList();
+    public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
+        return null;
     }
 
     @Override
-    public List<Move> generateBlackMoves(ChessPosition chessPosition) {
-        return Collections.emptyList();
+    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
+        return null;
     }
 
     @Required

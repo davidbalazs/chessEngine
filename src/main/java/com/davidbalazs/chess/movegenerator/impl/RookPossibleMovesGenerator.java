@@ -6,6 +6,7 @@ import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by David on 11/1/2015.
@@ -14,12 +15,12 @@ public class RookPossibleMovesGenerator implements PossibleMovesGenerator {
     private LineSlidingPiecePossibleMovesGenerator lineSlidingPiecePossibleMovesGenerator;
 
     @Override
-    public List<Move> generateWhiteMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
         return lineSlidingPiecePossibleMovesGenerator.generateWhiteMoves(chessPosition);
     }
 
     @Override
-    public List<Move> generateBlackMoves(ChessPosition chessPosition) {
+    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
         return null;
     }
 
