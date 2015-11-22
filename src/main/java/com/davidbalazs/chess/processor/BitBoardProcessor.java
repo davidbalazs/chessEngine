@@ -1,6 +1,7 @@
 package com.davidbalazs.chess.processor;
 
 import com.davidbalazs.chess.model.ChessPosition;
+import com.davidbalazs.chess.model.FriendlyPieceType;
 
 /**
  * Created by David on 10/11/2015.
@@ -36,6 +37,53 @@ public class BitBoardProcessor {
                 chessPosition.getWhiteRooks() |
                 chessPosition.getWhiteQueens();
     }
+
+    public FriendlyPieceType getPieceAtPosition(int xCoordinate, int yCoordinate, ChessPosition chessPosition) {
+        int positionIndex = yCoordinate * 8 + xCoordinate; // between 0 and 63
+
+        if (((chessPosition.getWhitePawns() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.WHITE_PAWN;
+        }
+
+        if (((chessPosition.getWhiteRooks() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.WHITE_ROOK;
+        }
+
+        if (((chessPosition.getWhiteKnights() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.WHITE_KNIGHT;
+        }
+
+        if (((chessPosition.getWhiteBishops() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.WHITE_BISHOP;
+        }
+
+        if (((chessPosition.getWhiteQueens() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.WHITE_QUEEN;
+        }
+
+        if (((chessPosition.getBlackPawns() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.BLACK_PAWN;
+        }
+
+        if (((chessPosition.getBlackRooks() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.BLACK_ROOK;
+        }
+
+        if (((chessPosition.getBlackKnights() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.BLACK_KNIGHT;
+        }
+
+        if (((chessPosition.getBlackBishops() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.BLACK_BISHOP;
+        }
+
+        if (((chessPosition.getBlackQueens() >> positionIndex) & 1L) == 1) {
+            return FriendlyPieceType.BLACK_QUEEN;
+        }
+
+        return null;
+    }
+
 
     /**
      * Returns a bitboard like:

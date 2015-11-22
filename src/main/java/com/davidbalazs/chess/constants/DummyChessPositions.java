@@ -22,7 +22,7 @@ public class DummyChessPositions {
      * = = = = = = = =
      */
     public static List<FriendlyPiecePosition> dummyChessPosition1() {
-        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 0, 1), new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 7, 1), new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 2, 2));
+        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 4, 0), new FriendlyPiecePosition(FriendlyPieceType.WHITE_BISHOP, 2, 0), new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 3, 1), new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 0, 6), new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 0, 1), new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 1, 2), new FriendlyPiecePosition(FriendlyPieceType.BLACK_BISHOP, 2, 2));
     }
 
     public static List<FriendlyPiecePosition> dummyChessPosition2() {
@@ -34,6 +34,6 @@ public class DummyChessPositions {
     }
 
     public static List<FriendlyPiecePosition> dummyChessPosition4() {
-        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 4, 4),new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN,4,7),new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN,2,4));
+        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 4, 4), new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 4, 7), new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 2, 4));
     }
 }
