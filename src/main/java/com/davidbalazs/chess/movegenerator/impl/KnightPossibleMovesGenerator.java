@@ -32,15 +32,15 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
 
     @Override
     public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
-        return generatePossibleKnightMoves(chessPosition.getWhiteKnights(), bitBoardProcessor.getWhitePiecesBitboard(chessPosition), FriendlyPieceType.WHITE_KNIGHT);
+        return generatePossibleKnightMoves(chessPosition, chessPosition.getWhiteKnights(), bitBoardProcessor.getWhitePiecesBitboard(chessPosition), FriendlyPieceType.WHITE_KNIGHT);
     }
 
     @Override
     public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
-        return generatePossibleKnightMoves(chessPosition.getBlackKnights(), bitBoardProcessor.getBlackPiecesBitboard(chessPosition), FriendlyPieceType.BLACK_KNIGHT);
+        return generatePossibleKnightMoves(chessPosition, chessPosition.getBlackKnights(), bitBoardProcessor.getBlackPiecesBitboard(chessPosition), FriendlyPieceType.BLACK_KNIGHT);
     }
 
-    private TreeSet<Integer> generatePossibleKnightMoves(long knightBitboard, long samePlayerOccupiedPositions, FriendlyPieceType knightColor) {
+    private TreeSet<Integer> generatePossibleKnightMoves(ChessPosition chessPosition, long knightBitboard, long samePlayerOccupiedPositions, FriendlyPieceType knightColor) {
         TreeSet<Integer> possibleMoves = new TreeSet<Integer>(Collections.reverseOrder());
 
         long seeKnightMoves = (knightBitboard >> 6) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~samePlayerOccupiedPositions;
@@ -52,27 +52,30 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
         long nneKnightMoves = (knightBitboard << 17) & ~BitboardConstants.FILE_A & ~samePlayerOccupiedPositions;
         long neeKnightMoves = (knightBitboard << 10) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~samePlayerOccupiedPositions;
 
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, seeKnightMoves, -2, 1);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, sseKnightMoves, -1, 2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, sswKnightMoves, 1, 2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, swwKnightMoves, 2, 1);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, nwwKnightMoves, 2, -1);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, nnwKnightMoves, 1, -2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, nneKnightMoves, -1, -2);//
-        populatePossibleMovesListFromBitboard(possibleMoves, knightColor, neeKnightMoves, -2, -1);
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, seeKnightMoves, -2, 1);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, sseKnightMoves, -1, 2);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, sswKnightMoves, 1, 2);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, swwKnightMoves, 2, 1);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, nwwKnightMoves, 2, -1);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, nnwKnightMoves, 1, -2);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, nneKnightMoves, -1, -2);//
+        populatePossibleMovesListFromBitboard(chessPosition, possibleMoves, knightColor, neeKnightMoves, -2, -1);
 
         return possibleMoves;
     }
 
-    private void populatePossibleMovesListFromBitboard(TreeSet<Integer> possibleMoves, FriendlyPieceType pieceType, long possibleMovesBitboard, int distanceToInitialPositionX, int distanceToInitialPositionY) {
+    private void populatePossibleMovesListFromBitboard(ChessPosition chessPosition, TreeSet<Integer> possibleMoves, FriendlyPieceType pieceType, long possibleMovesBitboard, int distanceToInitialPositionX, int distanceToInitialPositionY) {
         if (possibleMovesBitboard == 0) {
             return;
         }
 
         for (int i = 0; i < 64; i++) {
             if (((possibleMovesBitboard >> i) & 1L) == 1) {
+
+                FriendlyPieceType capturePiece = bitBoardProcessor.getPieceAtPosition(i % 8, i / 8, chessPosition);
+
                 int generatedMove = moveService.createMove(pieceType, new PiecePosition(i % 8 + distanceToInitialPositionX,
-                        i / 8 + distanceToInitialPositionY), new PiecePosition(i % 8, i / 8), false, false, null, null, null, false, false);
+                        i / 8 + distanceToInitialPositionY), new PiecePosition(i % 8, i / 8), false, false, null, capturePiece, null, false, false);
                 possibleMoves.add(generatedMove);
                 LOGGER.info("new move:" + moveService.getFriendlyFormat(generatedMove));
                 //TODO: instead of false, see if black king will be in check by this new pawn move.
