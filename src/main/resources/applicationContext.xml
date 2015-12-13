@@ -16,7 +16,7 @@
           class="com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator">
         <property name="possibleMoveGenerators">
             <list>
-                <ref bean="pawnPossibleMoveGenerator"/>
+                <!--<ref bean="pawnPossibleMoveGenerator"/>-->
                 <ref bean="knightPossibleMovesGenerator"/>
                 <!--<ref bean="rookPossibleMovesGenerator"/>-->
                 <!--<ref bean="kingPossibleMovesGenerator"/>-->
