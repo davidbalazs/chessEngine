@@ -1,5 +1,7 @@
 package com.davidbalazs.chess.model;
 
+import com.davidbalazs.chess.exceptions.NoKingOnChessBoardException;
+
 /**
  * Created by David on 9/28/2015.
  */
@@ -101,12 +103,33 @@ public class ChessPosition {
         return whiteKing;
     }
 
+    public int getWhiteKingPositionNumber() {
+        for (int i = 0; i < 64; i++) {
+            if (((whiteKing >> i) & 1L) == 1) {
+                return i;
+            }
+        }
+
+        throw new NoKingOnChessBoardException(FriendlyPieceType.WHITE_KING);
+    }
+
+
     public void setWhiteKing(long whiteKing) {
         this.whiteKing = whiteKing;
     }
 
     public long getBlackKing() {
         return blackKing;
+    }
+
+    public int getBlackKingPositionNumber() {
+        for (int i = 0; i < 64; i++) {
+            if (((blackKing >> i) & 1L) == 1) {
+                return i;
+            }
+        }
+
+        throw new NoKingOnChessBoardException(FriendlyPieceType.BLACK_KING);
     }
 
     public void setBlackKing(long blackKing) {

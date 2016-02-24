@@ -41,7 +41,7 @@ public class KnightPossibleMovesGenerator implements PossibleMovesGenerator {
     }
 
     private TreeSet<Integer> generatePossibleKnightMoves(ChessPosition chessPosition, long knightBitboard, long samePlayerOccupiedPositions, FriendlyPieceType knightColor) {
-        TreeSet<Integer> possibleMoves = new TreeSet<Integer>(Collections.reverseOrder());
+        TreeSet<Integer> possibleMoves = new TreeSet<>(Collections.reverseOrder());
 
         long seeKnightMoves = (knightBitboard >> 6) & ~BitboardConstants.FILE_A & ~BitboardConstants.FILE_B & ~samePlayerOccupiedPositions;
         long sseKnightMoves = (knightBitboard >> 15) & ~BitboardConstants.FILE_A & ~samePlayerOccupiedPositions;

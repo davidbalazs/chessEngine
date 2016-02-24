@@ -17,9 +17,9 @@
         <property name="possibleMoveGenerators">
             <list>
                 <!--<ref bean="pawnPossibleMoveGenerator"/>-->
-                <ref bean="knightPossibleMovesGenerator"/>
+                <!--<ref bean="knightPossibleMovesGenerator"/>-->
                 <!--<ref bean="rookPossibleMovesGenerator"/>-->
-                <!--<ref bean="kingPossibleMovesGenerator"/>-->
+                <ref bean="kingPossibleMovesGenerator"/>
             </list>
         </property>
     </bean>
@@ -49,6 +49,7 @@
     <bean id="kingPossibleMovesGenerator"
           class="com.davidbalazs.chess.movegenerator.impl.KingPossibleMovesGenerator">
         <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+        <property name="moveService" ref="moveService"/>
     </bean>
 
     <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>
