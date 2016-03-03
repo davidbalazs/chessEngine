@@ -7,7 +7,6 @@ import com.davidbalazs.chess.model.FriendlyPiecePosition;
 import java.util.List;
 
 /**
- *
  * Created by David on 9/28/2015.
  */
 public interface FriendlyChessBoardService {
