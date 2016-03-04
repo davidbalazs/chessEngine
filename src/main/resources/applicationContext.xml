@@ -55,8 +55,10 @@
 
     <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>
 
-    <bean id="minimax" class="com.davidbalazs.chess.service.impl.Minimax">
+    <bean id="minimax" class="com.davidbalazs.chess.algorithms.Minimax">
         <property name="moveGenerator" ref="possibleMovesGenerator"/>
     </bean>
+
+    <bean id="evaluationFunction" class="com.davidbalazs.chess.algorithms.EvaluationFunction"/>
 
 </beans>

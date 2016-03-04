@@ -1,4 +1,4 @@
-package com.davidbalazs.chess.service.impl;
+package com.davidbalazs.chess.algorithms;
 
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
@@ -13,6 +13,7 @@ import java.util.TreeSet;
 public class Minimax {
     public static final Logger LOGGER = Logger.getLogger(Minimax.class);
     private MainPossibleMovesGenerator moveGenerator;
+
 
     public int minimax(ChessPosition chessPosition, int depth) {
         return max(chessPosition, depth);

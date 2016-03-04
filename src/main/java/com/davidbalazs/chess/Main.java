@@ -5,7 +5,7 @@ import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
 import com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService;
-import com.davidbalazs.chess.service.impl.Minimax;
+import com.davidbalazs.chess.algorithms.Minimax;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
