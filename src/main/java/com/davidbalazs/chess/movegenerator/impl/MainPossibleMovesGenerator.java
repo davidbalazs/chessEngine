@@ -1,7 +1,6 @@
 package com.davidbalazs.chess.movegenerator.impl;
 
 import com.davidbalazs.chess.model.ChessPosition;
-import com.davidbalazs.chess.model.Move;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 
 import java.util.ArrayList;

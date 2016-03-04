@@ -1,9 +1,7 @@
 package com.davidbalazs.chess.movegenerator;
 
 import com.davidbalazs.chess.model.ChessPosition;
-import com.davidbalazs.chess.model.Move;
 
-import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -11,5 +9,6 @@ import java.util.TreeSet;
  */
 public interface PossibleMovesGenerator {
     TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition);
+
     TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition);
 }

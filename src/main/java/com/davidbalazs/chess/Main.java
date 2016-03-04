@@ -1,6 +1,5 @@
 package com.davidbalazs.chess;
 
-import com.davidbalazs.chess.constants.BitboardConstants;
 import com.davidbalazs.chess.constants.DummyChessPositions;
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
@@ -15,18 +14,22 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         FriendlyChessBoardService friendlyChessBoardService = applicationContext.getBean("friendlyChessBoardService", DefaultFriendlyChessBoardService.class);
-        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition5());
-
-        System.out.println(friendlyChessBoardService.getFriendlyChessPosition(chessPosition));
+        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition4());
 
         friendlyChessBoardService.displayChessBoard(chessPosition);
-        MainPossibleMovesGenerator defaultMoveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
+
+        MainPossibleMovesGenerator moveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
 
         long startTime = System.nanoTime();
-//        for (int i = 0; i < 100000; i++) {
-        defaultMoveGenerator.generateBlackMoves(chessPosition);
+        for (int i = 0; i < 4181; i++) {
+            moveGenerator.generateWhiteMoves(chessPosition);
+        }
+//
+//        for (int i = 0; i < 64; i++) {
+//            ChessPosition chessPosition1 = new ChessPosition();
+//            chessPosition1.setWhiteRooks(BitboardConstants.lineSlidingDown[i]);
+//            friendlyChessBoardService.displayChessBoard(chessPosition1);
 //        }
-        System.out.println(Long.toBinaryString(BitboardConstants.precomputedKingMoves[0]));
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / 1000000;  //divide by 1000000 to get milliseconds.
         System.out.println("duration:" + duration);

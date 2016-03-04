@@ -1,16 +1,16 @@
 package com.davidbalazs.chess.movegenerator.impl;
 
 import com.davidbalazs.chess.constants.BitboardConstants;
-import com.davidbalazs.chess.model.*;
+import com.davidbalazs.chess.model.ChessPosition;
+import com.davidbalazs.chess.model.FriendlyPieceType;
+import com.davidbalazs.chess.model.PiecePosition;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 import com.davidbalazs.chess.processor.BitBoardProcessor;
 import com.davidbalazs.chess.service.MoveService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.TreeSet;
 
 /**

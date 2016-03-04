@@ -7,8 +7,9 @@ import com.davidbalazs.chess.model.FriendlyPieceType;
  * Created by David on 10/11/2015.
  */
 public class BitBoardProcessor {
-    public long getEmptyPositions(ChessPosition chessPosition) {
-        return ~(chessPosition.getWhitePawns() |
+
+    public long getOccupiedPositions(ChessPosition chessPosition) {
+        return chessPosition.getWhitePawns() |
                 chessPosition.getWhiteBishops() |
                 chessPosition.getWhiteKnights() |
                 chessPosition.getWhiteRooks() |
@@ -17,9 +18,13 @@ public class BitBoardProcessor {
                 chessPosition.getBlackBishops() |
                 chessPosition.getBlackKnights() |
                 chessPosition.getBlackRooks() |
-                chessPosition.getBlackQueens()
-        );
-        //TODO add kings positions as well.
+                chessPosition.getBlackQueens() |
+                chessPosition.getWhiteKing() |
+                chessPosition.getBlackKing();
+    }
+
+    public long getEmptyPositions(ChessPosition chessPosition) {
+        return ~getOccupiedPositions(chessPosition);
     }
 
     public long getBlackPiecesBitboard(ChessPosition chessPosition) {

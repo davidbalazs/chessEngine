@@ -151,7 +151,7 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
     }
 
     public void displayChessBoard(ChessPosition chessPosition) {
-
+        System.out.println(getFriendlyChessPosition(chessPosition));
     }
 
     private List<FriendlyPiecePosition> getInitialChessBoardPosition() {
