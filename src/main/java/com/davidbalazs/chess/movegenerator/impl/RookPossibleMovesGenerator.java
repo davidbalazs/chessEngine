@@ -23,52 +23,75 @@ public class RookPossibleMovesGenerator implements PossibleMovesGenerator {
 
     @Override
     public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
-        long slidingPieceBitboard = chessPosition.getWhiteRooks();
+        return generateMoves(chessPosition, chessPosition.getWhiteRooks(), bitBoardProcessor.getBlackPiecesBitboard(chessPosition), FriendlyPieceType.WHITE_ROOK);
+    }
+
+    @Override
+    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
+        return generateMoves(chessPosition, chessPosition.getBlackRooks(), bitBoardProcessor.getWhitePiecesBitboard(chessPosition), FriendlyPieceType.BLACK_ROOK);
+    }
+
+    private TreeSet<Integer> generateMoves(ChessPosition chessPosition, long slidingPieceBitboard, long opponentBotboard, FriendlyPieceType pieceToMove) {
         TreeSet<Integer> possibleMoves = new TreeSet<>(Collections.reverseOrder());
         for (int i = 0; i < 64; i++) {
             if (((slidingPieceBitboard >> i) & 1L) == 1) {
-                long possibleMovesBitboardToRight = generatePossibleMovesBitboardToRight(i, chessPosition, bitBoardProcessor.getBlackPiecesBitboard(chessPosition));
-                long possibleMovesBitboardToLeft = generatePossibleMovesBitboardToLeft(i, chessPosition, bitBoardProcessor.getBlackPiecesBitboard(chessPosition));
-                long possibleMovesBitboard = possibleMovesBitboardToRight | possibleMovesBitboardToLeft;
-                generateMoves(FriendlyPieceType.WHITE_ROOK, possibleMovesBitboard, possibleMoves, new PiecePosition(i % 8, i / 8));
+
+
+                long possibleMovesBitboardToRight = generatePossibleMovesBitboardToRight(i, chessPosition, opponentBotboard);
+                long possibleMovesBitboardToLeft = generatePossibleMovesBitboardToLeft(i, chessPosition, opponentBotboard);
+                long possibleMovesBitboardToTop = generatePossibleMovesBitboardToTop(i, chessPosition, opponentBotboard);
+                long possibleMovesBitboardToBottom = generatePossibleMovesBitboardToBottom(i, chessPosition, opponentBotboard);
+
+                long possibleMovesBitboard = possibleMovesBitboardToRight | possibleMovesBitboardToLeft | possibleMovesBitboardToTop | possibleMovesBitboardToBottom;
+
+                generateMoves(pieceToMove, possibleMovesBitboard, possibleMoves, new PiecePosition(i % 8, i / 8), chessPosition);
             }
         }
 
         return possibleMoves;
     }
 
-    @Override
-    public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
-        return null;
-    }
-
     private long generatePossibleMovesBitboardToRight(int i, ChessPosition chessPosition, long opponentBitboard) {
         long occupiedBitboard = bitBoardProcessor.getOccupiedPositions(chessPosition);
         long possibleMovesToRight = BitboardConstants.lineSlidingRight[i] & occupiedBitboard;
         possibleMovesToRight = possibleMovesToRight << 1 | possibleMovesToRight << 2 | possibleMovesToRight << 3 | possibleMovesToRight << 4 | possibleMovesToRight << 5 | possibleMovesToRight << 6;
-        possibleMovesToRight = possibleMovesToRight & BitboardConstants.lineSlidingRight[i];
-        possibleMovesToRight = possibleMovesToRight ^ BitboardConstants.lineSlidingRight[i];
-        possibleMovesToRight = possibleMovesToRight & (opponentBitboard | (~occupiedBitboard));
+        return getBitboardFromNumber(possibleMovesToRight, BitboardConstants.lineSlidingRight[i], opponentBitboard, occupiedBitboard);
 
-        return possibleMovesToRight;
     }
 
     private long generatePossibleMovesBitboardToLeft(int i, ChessPosition chessPosition, long opponentBitboard) {
         long occupiedBitboard = bitBoardProcessor.getOccupiedPositions(chessPosition);
         long possibleMovesToLeft = BitboardConstants.lineSlidingLeft[i] & occupiedBitboard;
         possibleMovesToLeft = possibleMovesToLeft >> 1 | possibleMovesToLeft >> 2 | possibleMovesToLeft >> 3 | possibleMovesToLeft >> 4 | possibleMovesToLeft >> 5 | possibleMovesToLeft >> 6;
-        possibleMovesToLeft = possibleMovesToLeft & BitboardConstants.lineSlidingLeft[i];
-        possibleMovesToLeft = possibleMovesToLeft ^ BitboardConstants.lineSlidingLeft[i];
-        possibleMovesToLeft = possibleMovesToLeft & (opponentBitboard | (~occupiedBitboard));
-
-        return possibleMovesToLeft;
+        return getBitboardFromNumber(possibleMovesToLeft, BitboardConstants.lineSlidingLeft[i], opponentBitboard, occupiedBitboard);
     }
 
-    private void generateMoves(FriendlyPieceType pieceType, long bitboard, TreeSet<Integer> possibleMoves, PiecePosition initialPosition) {
+    private long generatePossibleMovesBitboardToTop(int i, ChessPosition chessPosition, long opponentBitboard) {
+        long occupiedBitboard = bitBoardProcessor.getOccupiedPositions(chessPosition);
+        long possibleMovesToTop = BitboardConstants.lineSlidingUp[i] & occupiedBitboard;
+        possibleMovesToTop = possibleMovesToTop << 8 | possibleMovesToTop << 16 | possibleMovesToTop << 24 | possibleMovesToTop << 32 | possibleMovesToTop << 40 | possibleMovesToTop << 48;
+        return getBitboardFromNumber(possibleMovesToTop, BitboardConstants.lineSlidingUp[i], opponentBitboard, occupiedBitboard);
+    }
+
+    private long generatePossibleMovesBitboardToBottom(int i, ChessPosition chessPosition, long opponentBitboard) {
+        long occupiedBitboard = bitBoardProcessor.getOccupiedPositions(chessPosition);
+        long possibleMovesToBottom = BitboardConstants.lineSlidingDown[i] & occupiedBitboard;
+        possibleMovesToBottom = possibleMovesToBottom >> 8 | possibleMovesToBottom >> 16 | possibleMovesToBottom >> 24 | possibleMovesToBottom >> 32 | possibleMovesToBottom >> 40 | possibleMovesToBottom >> 48;
+        return getBitboardFromNumber(possibleMovesToBottom, BitboardConstants.lineSlidingDown[i], opponentBitboard, occupiedBitboard);
+    }
+
+    private long getBitboardFromNumber(long bitboardNumber, long precomputedBitboard, long opponentBitboard, long occupiedBitboard) {
+        bitboardNumber = bitboardNumber & precomputedBitboard;
+        bitboardNumber = bitboardNumber ^ precomputedBitboard;
+        return bitboardNumber & (opponentBitboard | (~occupiedBitboard));
+    }
+
+    private void generateMoves(FriendlyPieceType pieceType, long bitboard, TreeSet<Integer> possibleMoves, PiecePosition initialPosition, ChessPosition chessPosition) {
         for (int i = 0; i < 64; i++) {
             if (((bitboard >> i) & 1L) == 1) {
+                FriendlyPieceType capturedPiece = bitBoardProcessor.getPieceAtPosition(i % 8, i / 8, chessPosition);
                 int generatedMove = moveService.createMove(pieceType, initialPosition, new PiecePosition(i % 8, i / 8),
-                        false, false, null, null, null, false, false);
+                        false, false, null, capturedPiece, null, false, false);
                 possibleMoves.add(generatedMove);
                 LOGGER.info("new move:" + moveService.getFriendlyFormat(generatedMove));
             }
