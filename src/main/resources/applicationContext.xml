@@ -16,7 +16,7 @@
           class="com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator">
         <property name="possibleMoveGenerators">
             <list>
-                <!--<ref bean="pawnPossibleMoveGenerator"/>-->
+                <ref bean="pawnPossibleMoveGenerator"/>
                 <!--<ref bean="knightPossibleMovesGenerator"/>-->
                 <ref bean="rookPossibleMovesGenerator"/>
                 <!--<ref bean="kingPossibleMovesGenerator"/>-->
@@ -54,5 +54,9 @@
     </bean>
 
     <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>
+
+    <bean id="minimax" class="com.davidbalazs.chess.service.impl.Minimax">
+        <property name="moveGenerator" ref="possibleMovesGenerator"/>
+    </bean>
 
 </beans>

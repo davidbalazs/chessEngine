@@ -5,6 +5,7 @@ import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
 import com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService;
+import com.davidbalazs.chess.service.impl.Minimax;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -21,9 +22,9 @@ public class Main {
         MainPossibleMovesGenerator moveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
 
         long startTime = System.nanoTime();
-        for (int i = 0; i < 4181; i++) {
-            moveGenerator.generateWhiteMoves(chessPosition);
-        }
+//        for (int i = 0; i < 10000; i++) {
+//            moveGenerator.generateBlackMoves(chessPosition);
+//        }
 //
 //        for (int i = 0; i < 64; i++) {
 //            ChessPosition chessPosition1 = new ChessPosition();
@@ -33,5 +34,9 @@ public class Main {
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / 1000000;  //divide by 1000000 to get milliseconds.
         System.out.println("duration:" + duration);
+
+
+        Minimax minimax=applicationContext.getBean("minimax", Minimax.class);
+        minimax.minimax(chessPosition,2);
     }
 }
