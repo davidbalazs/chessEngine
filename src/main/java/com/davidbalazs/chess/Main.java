@@ -1,11 +1,11 @@
 package com.davidbalazs.chess;
 
+import com.davidbalazs.chess.algorithms.Minimax;
 import com.davidbalazs.chess.constants.DummyChessPositions;
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
 import com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService;
-import com.davidbalazs.chess.algorithms.Minimax;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,7 +20,7 @@ public class Main {
         friendlyChessBoardService.displayChessBoard(chessPosition);
 
         MainPossibleMovesGenerator moveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
-
+        Minimax minimax = applicationContext.getBean("minimax", Minimax.class);
         long startTime = System.nanoTime();
 //        for (int i = 0; i < 10000; i++) {
 //            moveGenerator.generateBlackMoves(chessPosition);
@@ -31,12 +31,12 @@ public class Main {
 //            chessPosition1.setWhiteRooks(BitboardConstants.lineSlidingDown[i]);
 //            friendlyChessBoardService.displayChessBoard(chessPosition1);
 //        }
+
+        minimax.minimax(chessPosition, 3);
+
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / 1000000;  //divide by 1000000 to get milliseconds.
         System.out.println("duration:" + duration);
-
-
-        Minimax minimax=applicationContext.getBean("minimax", Minimax.class);
-        minimax.minimax(chessPosition,2);
+        System.out.println("number of generated moves:" + minimax.numberOfGeneratedMoves);
     }
 }

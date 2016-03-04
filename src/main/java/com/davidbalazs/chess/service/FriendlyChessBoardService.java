@@ -17,4 +17,13 @@ public interface FriendlyChessBoardService {
     FriendlyChessPosition getFriendlyChessPosition(ChessPosition chessPosition);
 
     void displayChessBoard(ChessPosition chessPosition);
+
+    /**
+     * Immutable method
+     *
+     * @param chessPosition
+     * @param move
+     * @return
+     */
+    ChessPosition applyMove(ChessPosition chessPosition, int move);
 }

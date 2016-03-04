@@ -5,6 +5,8 @@ import com.davidbalazs.chess.model.FriendlyChessPosition;
 import com.davidbalazs.chess.model.FriendlyPiecePosition;
 import com.davidbalazs.chess.model.FriendlyPieceType;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
+import com.davidbalazs.chess.service.MoveService;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
  * Created by David on 9/28/2015.
  */
 public class DefaultFriendlyChessBoardService implements FriendlyChessBoardService {
+
+    private MoveService moveService;
 
     public ChessPosition initializeChessBoard(List<FriendlyPiecePosition> piecePositionList) {
         ChessPosition chessPosition = new ChessPosition();
@@ -154,6 +158,30 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
         System.out.println(getFriendlyChessPosition(chessPosition));
     }
 
+    @Override
+    public ChessPosition applyMove(ChessPosition chessPosition, int move) {
+        ChessPosition newChessPosition = new ChessPosition();
+        populateChessPosition(chessPosition, newChessPosition);
+        FriendlyPieceType movedPiece = moveService.getMovedPieceType(move);
+        return newChessPosition;
+    }
+
+    private void populateChessPosition(ChessPosition source, ChessPosition target) {
+        target.setWhitePawns(source.getWhitePawns());
+        target.setWhiteRooks(source.getWhiteRooks());
+        target.setWhiteKnights(source.getWhiteKnights());
+        target.setWhiteBishops(source.getWhiteBishops());
+        target.setWhiteQueens(source.getWhiteQueens());
+        target.setWhiteKing(source.getWhiteKing());
+
+        target.setBlackPawns(source.getBlackPawns());
+        target.setBlackRooks(source.getBlackRooks());
+        target.setBlackKnights(source.getBlackKnights());
+        target.setBlackBishops(source.getBlackBishops());
+        target.setBlackQueens(source.getBlackQueens());
+        target.setBlackKing(source.getBlackKing());
+    }
+
     private List<FriendlyPiecePosition> getInitialChessBoardPosition() {
         return Arrays.asList(
                 new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 0, 1),
@@ -189,5 +217,10 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
                 new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, 7, 7),
                 new FriendlyPiecePosition(FriendlyPieceType.BLACK_QUEEN, 3, 7),
                 new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, 4, 7));
+    }
+
+    @Required
+    public void setMoveService(MoveService moveService) {
+        this.moveService = moveService;
     }
 }

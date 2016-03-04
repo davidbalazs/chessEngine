@@ -2,6 +2,7 @@ package com.davidbalazs.chess.algorithms;
 
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
+import com.davidbalazs.chess.service.FriendlyChessBoardService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -13,7 +14,10 @@ import java.util.TreeSet;
 public class Minimax {
     public static final Logger LOGGER = Logger.getLogger(Minimax.class);
     private MainPossibleMovesGenerator moveGenerator;
+    private FriendlyChessBoardService chessBoardService;
 
+    //TODO: delete this
+    public long numberOfGeneratedMoves = 0;
 
     public int minimax(ChessPosition chessPosition, int depth) {
         return max(chessPosition, depth);
@@ -31,8 +35,9 @@ public class Minimax {
         LOGGER.info("max (depth = " + depth + " )");
         TreeSet<Integer> possibleMoves = moveGenerator.generateWhiteMoves(chessPosition);
         int minMove;
+        numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
-            minMove = min(chessPosition, depth);
+            minMove = min(chessBoardService.applyMove(chessPosition, move), depth);
         }
 
         return 0;
@@ -42,8 +47,9 @@ public class Minimax {
         LOGGER.info("min (depth = " + depth + " : ");
         TreeSet<Integer> possibleMoves = moveGenerator.generateBlackMoves(chessPosition);
         int maxMove;
+        numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
-            maxMove = max(chessPosition, depth);
+            maxMove = max(chessBoardService.applyMove(chessPosition, move), depth);
         }
         return 0;
     }
@@ -51,5 +57,10 @@ public class Minimax {
     @Required
     public void setMoveGenerator(MainPossibleMovesGenerator moveGenerator) {
         this.moveGenerator = moveGenerator;
+    }
+
+    @Required
+    public void setChessBoardService(FriendlyChessBoardService chessBoardService) {
+        this.chessBoardService = chessBoardService;
     }
 }

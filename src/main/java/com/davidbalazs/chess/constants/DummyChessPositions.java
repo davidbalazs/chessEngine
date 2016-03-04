@@ -34,7 +34,7 @@ public class DummyChessPositions {
 
     public static List<FriendlyPiecePosition> dummyChessPosition4() {
         return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.BLACK_ROOK, 4, 4),
-                new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 3, 4));
+                new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 1, 1));
     }
 
     public static List<FriendlyPiecePosition> dummyChessPosition5() {

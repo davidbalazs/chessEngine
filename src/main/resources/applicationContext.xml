@@ -6,7 +6,10 @@
     http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
     <alias name="defaultChessBoardService" alias="friendlyChessBoardService"/>
-    <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService"/>
+    <bean id="defaultChessBoardService" class="com.davidbalazs.chess.service.impl.DefaultFriendlyChessBoardService">
+        <property name="moveService" ref="moveService"/>
+    </bean>
+
 
     <alias name="defaultMoveService" alias="moveService"/>
     <bean id="defaultMoveService" class="com.davidbalazs.chess.service.impl.DefaultMoveService"/>
@@ -57,6 +60,7 @@
 
     <bean id="minimax" class="com.davidbalazs.chess.algorithms.Minimax">
         <property name="moveGenerator" ref="possibleMovesGenerator"/>
+        <property name="chessBoardService" ref="friendlyChessBoardService"/>
     </bean>
 
     <bean id="evaluationFunction" class="com.davidbalazs.chess.algorithms.EvaluationFunction"/>
