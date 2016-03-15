@@ -1,5 +1,6 @@
 package com.davidbalazs.chess.service.impl;
 
+import com.davidbalazs.chess.exceptions.NoSuchPieceException;
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.model.FriendlyChessPosition;
 import com.davidbalazs.chess.model.FriendlyPiecePosition;
@@ -163,7 +164,41 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
         ChessPosition newChessPosition = new ChessPosition();
         populateChessPosition(chessPosition, newChessPosition);
         FriendlyPieceType movedPiece = moveService.getMovedPieceType(move);
+        long movedPieceBitboard = getBitboard(chessPosition, movedPiece);
+
         return newChessPosition;
+    }
+
+    @Override
+    public long getBitboard(ChessPosition chessPosition, FriendlyPieceType pieceType) {
+        switch (pieceType) {
+            case WHITE_PAWN:
+                return chessPosition.getWhitePawns();
+            case WHITE_KNIGHT:
+                return chessPosition.getWhiteKnights();
+            case WHITE_BISHOP:
+                return chessPosition.getWhiteBishops();
+            case WHITE_ROOK:
+                return chessPosition.getWhiteRooks();
+            case WHITE_QUEEN:
+                return chessPosition.getWhiteQueens();
+            case BLACK_PAWN:
+                return chessPosition.getBlackPawns();
+            case BLACK_KNIGHT:
+                return chessPosition.getBlackKnights();
+            case BLACK_BISHOP:
+                return chessPosition.getBlackBishops();
+            case BLACK_ROOK:
+                return chessPosition.getBlackRooks();
+            case BLACK_QUEEN:
+                return chessPosition.getBlackQueens();
+            case WHITE_KING:
+                return chessPosition.getWhiteKing();
+            case BLACK_KING:
+                return chessPosition.getBlackKing();
+            default:
+                throw new NoSuchPieceException(pieceType);
+        }
     }
 
     private void populateChessPosition(ChessPosition source, ChessPosition target) {

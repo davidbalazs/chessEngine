@@ -3,6 +3,7 @@ package com.davidbalazs.chess.service;
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.model.FriendlyChessPosition;
 import com.davidbalazs.chess.model.FriendlyPiecePosition;
+import com.davidbalazs.chess.model.FriendlyPieceType;
 
 import java.util.List;
 
@@ -26,4 +27,8 @@ public interface FriendlyChessBoardService {
      * @return
      */
     ChessPosition applyMove(ChessPosition chessPosition, int move);
+
+    long getBitboard(ChessPosition chessPosition, FriendlyPieceType pieceType);
+
+    void setBitboard(ChessPosition chessPosition, FriendlyPieceType pieceType, long newBitboard);
 }

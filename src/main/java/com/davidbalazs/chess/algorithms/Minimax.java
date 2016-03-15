@@ -32,8 +32,9 @@ public class Minimax {
 
         depth--;
 
-        LOGGER.info("max (depth = " + depth + " )");
         TreeSet<Integer> possibleMoves = moveGenerator.generateWhiteMoves(chessPosition);
+
+        LOGGER.error("max (depth = " + depth + " and number of generated moves=" + possibleMoves.size() + " )");
         int minMove;
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
@@ -46,6 +47,7 @@ public class Minimax {
     private int min(ChessPosition chessPosition, int depth) {
         LOGGER.info("min (depth = " + depth + " : ");
         TreeSet<Integer> possibleMoves = moveGenerator.generateBlackMoves(chessPosition);
+        LOGGER.error("min (depth = " + depth + " and number of generated moves=" + possibleMoves.size() + " )");
         int maxMove;
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
