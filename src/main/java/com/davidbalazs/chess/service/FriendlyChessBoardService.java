@@ -28,7 +28,7 @@ public interface FriendlyChessBoardService {
      */
     ChessPosition applyMove(ChessPosition chessPosition, int move);
 
-    long getBitboard(ChessPosition chessPosition, FriendlyPieceType pieceType);
+    long getBitboardOfPiece(ChessPosition chessPosition, FriendlyPieceType pieceType);
 
-    void setBitboard(ChessPosition chessPosition, FriendlyPieceType pieceType, long newBitboard);
+    void setBitboardForPiece(ChessPosition chessPosition, FriendlyPieceType pieceType, long newBitboard);
 }

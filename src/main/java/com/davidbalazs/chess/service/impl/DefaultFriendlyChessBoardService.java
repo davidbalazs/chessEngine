@@ -1,10 +1,7 @@
 package com.davidbalazs.chess.service.impl;
 
 import com.davidbalazs.chess.exceptions.NoSuchPieceException;
-import com.davidbalazs.chess.model.ChessPosition;
-import com.davidbalazs.chess.model.FriendlyChessPosition;
-import com.davidbalazs.chess.model.FriendlyPiecePosition;
-import com.davidbalazs.chess.model.FriendlyPieceType;
+import com.davidbalazs.chess.model.*;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
 import com.davidbalazs.chess.service.MoveService;
 import org.springframework.beans.factory.annotation.Required;
@@ -161,16 +158,28 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
 
     @Override
     public ChessPosition applyMove(ChessPosition chessPosition, int move) {
+        //TODO: apply move works only without capturing pieces. Moves that have captured pieces won't be applied correctly.
         ChessPosition newChessPosition = new ChessPosition();
         populateChessPosition(chessPosition, newChessPosition);
-        FriendlyPieceType movedPiece = moveService.getMovedPieceType(move);
-        long movedPieceBitboard = getBitboard(chessPosition, movedPiece);
 
+        FriendlyPieceType movedPiece = moveService.getMovedPieceType(move);
+        long movedPieceBitboard = getBitboardOfPiece(chessPosition, movedPiece);
+        PiecePosition initialPosition = moveService.getInitialPosition(move);
+        int shift = initialPosition.getX() + initialPosition.getY() * 8;
+        long initialPositionMask = ~(1L << shift);
+
+        PiecePosition finalPosition = moveService.getFinalPosition(move);
+        shift = finalPosition.getX() + finalPosition.getY() * 8;
+        long finalPositionMask = 1L << shift;
+
+        long newBitboardForMovedPiece = movedPieceBitboard & initialPositionMask;
+        newBitboardForMovedPiece = newBitboardForMovedPiece | finalPositionMask;
+        setBitboardForPiece(newChessPosition, movedPiece, newBitboardForMovedPiece);
         return newChessPosition;
     }
 
     @Override
-    public long getBitboard(ChessPosition chessPosition, FriendlyPieceType pieceType) {
+    public long getBitboardOfPiece(ChessPosition chessPosition, FriendlyPieceType pieceType) {
         switch (pieceType) {
             case WHITE_PAWN:
                 return chessPosition.getWhitePawns();
@@ -196,6 +205,50 @@ public class DefaultFriendlyChessBoardService implements FriendlyChessBoardServi
                 return chessPosition.getWhiteKing();
             case BLACK_KING:
                 return chessPosition.getBlackKing();
+            default:
+                throw new NoSuchPieceException(pieceType);
+        }
+    }
+
+    @Override
+    public void setBitboardForPiece(ChessPosition chessPosition, FriendlyPieceType pieceType, long newBitboard) {
+        switch (pieceType) {
+            case WHITE_PAWN:
+                chessPosition.setWhitePawns(newBitboard);
+                break;
+            case WHITE_KNIGHT:
+                chessPosition.setWhiteKnights(newBitboard);
+                break;
+            case WHITE_BISHOP:
+                chessPosition.setWhiteBishops(newBitboard);
+                break;
+            case WHITE_ROOK:
+                chessPosition.setWhiteRooks(newBitboard);
+                break;
+            case WHITE_QUEEN:
+                chessPosition.setWhiteQueens(newBitboard);
+                break;
+            case BLACK_PAWN:
+                chessPosition.setBlackPawns(newBitboard);
+                break;
+            case BLACK_KNIGHT:
+                chessPosition.setBlackKnights(newBitboard);
+                break;
+            case BLACK_BISHOP:
+                chessPosition.setBlackBishops(newBitboard);
+                break;
+            case BLACK_ROOK:
+                chessPosition.setBlackRooks(newBitboard);
+                break;
+            case BLACK_QUEEN:
+                chessPosition.setBlackQueens(newBitboard);
+                break;
+            case WHITE_KING:
+                chessPosition.setWhiteKing(newBitboard);
+                break;
+            case BLACK_KING:
+                chessPosition.setBlackKing(newBitboard);
+                break;
             default:
                 throw new NoSuchPieceException(pieceType);
         }
