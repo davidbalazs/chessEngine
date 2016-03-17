@@ -2,6 +2,7 @@ package com.davidbalazs.chess.movegenerator.impl;
 
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,15 +41,8 @@ public class MainPossibleMovesGenerator implements PossibleMovesGenerator {
         return generatedMoves;
     }
 
+    @Required
     public void setPossibleMoveGenerators(List<PossibleMovesGenerator> possibleMoveGenerators) {
         this.possibleMoveGenerators = possibleMoveGenerators;
-    }
-
-    public void addMoveGenerator(PossibleMovesGenerator possibleMovesGenerator) {
-        if (possibleMoveGenerators == null) {
-            possibleMoveGenerators = new ArrayList<>();
-        }
-
-        possibleMoveGenerators.add(possibleMovesGenerator);
     }
 }
