@@ -56,6 +56,27 @@
         <property name="moveService" ref="moveService"/>
     </bean>
 
+    <alias name="mainPseudoLegalMovesGenerator" alias="pseudoLegalMovesGenerator"/>
+    <bean id="mainPseudoLegalMovesGenerator"
+          class="com.davidbalazs.chess.pseudolegalmoves.impl.MainPseudoLegalMovesGenerator">
+        <property name="pseudoLegalMovesGeneratorList">
+            <list>
+                <ref bean="rookPseudoLegalMovesGenerator"/>
+                <ref bean="knightPseudoLegalMovesGenerator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="rookPseudoLegalMovesGenerator"
+          class="com.davidbalazs.chess.pseudolegalmoves.impl.RookPseudoLegalMovesGenerator">
+        <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+    </bean>
+
+    <bean id="knightPseudoLegalMovesGenerator"
+          class="com.davidbalazs.chess.pseudolegalmoves.impl.KnightPseudoLegalMovesGenerator">
+        <property name="bitBoardProcessor" ref="bitBoardProcessor"/>
+    </bean>
+
     <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>
 
     <bean id="minimax" class="com.davidbalazs.chess.algorithms.Minimax">
