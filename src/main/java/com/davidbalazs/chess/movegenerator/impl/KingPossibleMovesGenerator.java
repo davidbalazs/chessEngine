@@ -6,6 +6,7 @@ import com.davidbalazs.chess.model.FriendlyPieceType;
 import com.davidbalazs.chess.model.PiecePosition;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 import com.davidbalazs.chess.processor.BitBoardProcessor;
+import com.davidbalazs.chess.pseudolegalmoves.PseudoLegalMovesGenerator;
 import com.davidbalazs.chess.service.MoveService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -20,42 +21,45 @@ public class KingPossibleMovesGenerator implements PossibleMovesGenerator {
     public static final Logger LOGGER = Logger.getLogger(KingPossibleMovesGenerator.class);
     private BitBoardProcessor bitBoardProcessor;
     private MoveService moveService;
+    private PseudoLegalMovesGenerator pseudoLegalMovesGenerator;
 
     @Override
     public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
-        int kingPosition = chessPosition.getWhiteKingPositionNumber();
-        long precomputedKingMoves = BitboardConstants.precomputedKingMoves[kingPosition];
+        int whiteKingPosition = chessPosition.getWhiteKingPositionNumber();
+        int blackKingPosition = chessPosition.getBlackKingPositionNumber();
 
         long whitePieces = bitBoardProcessor.getWhitePiecesBitboard(chessPosition);
-        //TODO: getWhitePiecesBitboard AND getBlackPiecesBitboard returns all pieces, but kings. So a white king can eat black king without even knowing.
         long blackPieces = bitBoardProcessor.getBlackPiecesBitboard(chessPosition);
 
-        TreeSet<Integer> possibleMoves = new TreeSet<>(Collections.reverseOrder());
+        long enemyAttacksBitboard = pseudoLegalMovesGenerator.getBlackAttaksBitboard(chessPosition);
 
-        long kingPossibleMovesWithoutCapture = precomputedKingMoves & ~whitePieces & ~blackPieces;
-        populatePossibleMovesListFromBitboardWithoutCapture(possibleMoves, FriendlyPieceType.WHITE_KING, kingPossibleMovesWithoutCapture, kingPosition);
-
-        long kingPossibleMovesWithCapture = precomputedKingMoves & ~whitePieces & blackPieces;
-        populatePossibleMovesListFromBitboardWithCapture(possibleMoves, FriendlyPieceType.WHITE_KING, kingPossibleMovesWithCapture, chessPosition, kingPosition);
-
-        return possibleMoves;
+        return generateKingMoves(chessPosition, whiteKingPosition, blackKingPosition, whitePieces, blackPieces, enemyAttacksBitboard, FriendlyPieceType.WHITE_KING);
     }
 
     @Override
     public TreeSet<Integer> generateBlackMoves(ChessPosition chessPosition) {
-        int kingPosition = chessPosition.getBlackKingPositionNumber();
-        long precomputedKingMoves = BitboardConstants.precomputedKingMoves[kingPosition];
+        int blackKingPosition = chessPosition.getBlackKingPositionNumber();
+        int whiteKingPosition = chessPosition.getWhiteKingPositionNumber();
 
-        long whitePieces = bitBoardProcessor.getWhitePiecesBitboard(chessPosition);
         long blackPieces = bitBoardProcessor.getBlackPiecesBitboard(chessPosition);
+        long whitePieces = bitBoardProcessor.getWhitePiecesBitboard(chessPosition);
+
+        long enemyAttacksBitboard = pseudoLegalMovesGenerator.getWhiteAttaksBitboard(chessPosition);
+
+        return generateKingMoves(chessPosition, blackKingPosition, whiteKingPosition, blackPieces, whitePieces, enemyAttacksBitboard, FriendlyPieceType.BLACK_KING);
+    }
+
+    private TreeSet<Integer> generateKingMoves(ChessPosition chessPosition, int kingPosition, int enemyKingPosition, long piecesBitboard, long enemyPiecesBitboard, long enemyAttacksBitboard, FriendlyPieceType pieceType) {
+        long precomputedKingMoves = BitboardConstants.precomputedKingMoves[kingPosition];
+        long precomputedEnemyKingMoves = BitboardConstants.precomputedKingMoves[enemyKingPosition];
 
         TreeSet<Integer> possibleMoves = new TreeSet<>(Collections.reverseOrder());
 
-        long kingPossibleMovesWithoutCapture = precomputedKingMoves & ~blackPieces & ~whitePieces;
-        populatePossibleMovesListFromBitboardWithoutCapture(possibleMoves, FriendlyPieceType.BLACK_KING, kingPossibleMovesWithoutCapture, kingPosition);
+        long kingPossibleMovesWithoutCapture = precomputedKingMoves & ~piecesBitboard & ~enemyPiecesBitboard & ~precomputedEnemyKingMoves & ~enemyAttacksBitboard;
+        populatePossibleMovesListFromBitboardWithoutCapture(possibleMoves, pieceType, kingPossibleMovesWithoutCapture, kingPosition);
 
-        long kingPossibleMovesWithCapture = precomputedKingMoves & ~blackPieces & whitePieces;
-        populatePossibleMovesListFromBitboardWithCapture(possibleMoves, FriendlyPieceType.BLACK_KING, kingPossibleMovesWithCapture, chessPosition, kingPosition);
+        long kingPossibleMovesWithCapture = precomputedKingMoves & ~piecesBitboard & enemyPiecesBitboard & ~precomputedEnemyKingMoves & ~enemyAttacksBitboard;
+        populatePossibleMovesListFromBitboardWithCapture(possibleMoves, pieceType, kingPossibleMovesWithCapture, chessPosition, kingPosition);
 
         return possibleMoves;
     }
@@ -99,5 +103,10 @@ public class KingPossibleMovesGenerator implements PossibleMovesGenerator {
     @Required
     public void setMoveService(MoveService moveService) {
         this.moveService = moveService;
+    }
+
+    @Required
+    public void setPseudoLegalMovesGenerator(PseudoLegalMovesGenerator pseudoLegalMovesGenerator) {
+        this.pseudoLegalMovesGenerator = pseudoLegalMovesGenerator;
     }
 }
