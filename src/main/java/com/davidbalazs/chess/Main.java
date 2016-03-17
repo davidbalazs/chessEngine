@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         FriendlyChessBoardService friendlyChessBoardService = applicationContext.getBean("friendlyChessBoardService", DefaultFriendlyChessBoardService.class);
-        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition4());
+        ChessPosition chessPosition = friendlyChessBoardService.initializeChessBoard(DummyChessPositions.dummyChessPosition3());
 
         friendlyChessBoardService.displayChessBoard(chessPosition);
 
@@ -32,7 +32,9 @@ public class Main {
 //            friendlyChessBoardService.displayChessBoard(chessPosition1);
 //        }
 
-        minimax.minimax(chessPosition, 3);
+//        ChessPosition newChessPosition = friendlyChessBoardService.applyMove(chessPosition, 43302);
+//        friendlyChessBoardService.displayChessBoard(newChessPosition);
+        minimax.minimax(chessPosition, 4);
 
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / 1000000;  //divide by 1000000 to get milliseconds.

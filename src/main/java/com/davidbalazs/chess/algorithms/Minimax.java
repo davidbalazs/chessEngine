@@ -1,6 +1,7 @@
 package com.davidbalazs.chess.algorithms;
 
 import com.davidbalazs.chess.model.ChessPosition;
+import com.davidbalazs.chess.model.MinimaxEntity;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
 import org.apache.log4j.Logger;
@@ -14,20 +15,22 @@ import java.util.TreeSet;
 public class Minimax {
     public static final Logger LOGGER = Logger.getLogger(Minimax.class);
     private MainPossibleMovesGenerator moveGenerator;
+    private EvaluationFunction evaluationFunction;
     private FriendlyChessBoardService chessBoardService;
 
     //TODO: delete this
     public long numberOfGeneratedMoves = 0;
 
     public int minimax(ChessPosition chessPosition, int depth) {
-        return max(chessPosition, depth);
+        return max(chessPosition, depth).getMove();
     }
 
-    private int max(ChessPosition chessPosition, int depth) {
-        if (depth == 1) {
-            LOGGER.info("evaluation function gets called");
-            //call evaluation function and return it's value.
-            return 0;
+    private MinimaxEntity max(ChessPosition chessPosition, int depth) {
+        LOGGER.error("max is called. Depth=" + depth);
+        if (depth == 0) {
+            LOGGER.error("evaluation function gets called");
+            int valueOfEvaluation = evaluationFunction.evaluate(chessPosition);
+            return new MinimaxEntity(0, valueOfEvaluation);
         }
 
         depth--;
@@ -35,30 +38,55 @@ public class Minimax {
         TreeSet<Integer> possibleMoves = moveGenerator.generateWhiteMoves(chessPosition);
 
         LOGGER.error("max (depth = " + depth + " and number of generated moves=" + possibleMoves.size() + " )");
-        int minMove;
+        MinimaxEntity minEntity;
+        MinimaxEntity maxEntity = new MinimaxEntity(Integer.MIN_VALUE);
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
-            minMove = min(chessBoardService.applyMove(chessPosition, move), depth);
+            minEntity = min(chessBoardService.applyMove(chessPosition, move), depth);
+
+            if (minEntity.getEvaluationScore() > maxEntity.getEvaluationScore()) {
+                maxEntity.setEvaluationScore(minEntity.getEvaluationScore());
+                maxEntity.setMove(move);
+            }
         }
 
-        return 0;
+        return maxEntity;
     }
 
-    private int min(ChessPosition chessPosition, int depth) {
-        LOGGER.info("min (depth = " + depth + " : ");
+    private MinimaxEntity min(ChessPosition chessPosition, int depth) {
+        LOGGER.error("min is called. Depth=" + depth);
+        if (depth == 0) {
+            LOGGER.error("evaluation function gets called");
+            int valueOfEvaluation = 0 - evaluationFunction.evaluate(chessPosition);
+            return new MinimaxEntity(0, valueOfEvaluation);
+        }
+
+        depth--;
+
         TreeSet<Integer> possibleMoves = moveGenerator.generateBlackMoves(chessPosition);
         LOGGER.error("min (depth = " + depth + " and number of generated moves=" + possibleMoves.size() + " )");
-        int maxMove;
+        MinimaxEntity maxEntity;
+        MinimaxEntity minEntity = new MinimaxEntity(Integer.MAX_VALUE);
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
-            maxMove = max(chessBoardService.applyMove(chessPosition, move), depth);
+            maxEntity = max(chessBoardService.applyMove(chessPosition, move), depth);
+
+            if (maxEntity.getEvaluationScore() < minEntity.getEvaluationScore()) {
+                minEntity.setEvaluationScore(maxEntity.getEvaluationScore());
+                minEntity.setMove(move);
+            }
         }
-        return 0;
+        return minEntity;
     }
 
     @Required
     public void setMoveGenerator(MainPossibleMovesGenerator moveGenerator) {
         this.moveGenerator = moveGenerator;
+    }
+
+    @Required
+    public void setEvaluationFunction(EvaluationFunction evaluationFunction) {
+        this.evaluationFunction = evaluationFunction;
     }
 
     @Required
