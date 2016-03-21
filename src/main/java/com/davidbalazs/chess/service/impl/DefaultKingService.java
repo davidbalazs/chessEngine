@@ -35,6 +35,23 @@ public class DefaultKingService implements KingService {
     }
 
     @Override
+    public KingState getBlackKingStateAfterMove(ChessPosition chessPosition, int whiteMove) {
+        //TODO: testeaza si cazul in care mutarea genereaza o remiza.
+        //TODO: verifica si daca mutarile regelui alb nu genereaza o remiza (adica daca regele alb este mutat intr-un loc, daca acel loc nu genereaza remiza).
+        ChessPosition chessPositionAfterMove = chessBoardService.applyMove(chessPosition, whiteMove);
+        if (isBlackKingInCheck(chessPositionAfterMove)) {
+            TreeSet<Integer> blackPossibleMoves = possibleMovesGenerator.generateBlackMoves(chessPositionAfterMove);
+            if (blackPossibleMoves.isEmpty()) {
+                return KingState.CHECK_MATE;
+            }
+
+            return KingState.KING_IN_CHECK;
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean isWhiteKingInCheck(ChessPosition chessPosition) {
         long whiteKingBitboard = chessPosition.getWhiteKing();
         long blackAttacksBitboard = pseudoLegalMovesGenerator.getBlackAttaksBitboard(chessPosition);

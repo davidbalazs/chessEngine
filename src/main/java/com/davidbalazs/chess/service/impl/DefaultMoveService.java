@@ -1,6 +1,7 @@
 package com.davidbalazs.chess.service.impl;
 
 import com.davidbalazs.chess.model.FriendlyPieceType;
+import com.davidbalazs.chess.model.KingState;
 import com.davidbalazs.chess.model.PiecePosition;
 import com.davidbalazs.chess.service.MoveService;
 
@@ -104,6 +105,22 @@ public class DefaultMoveService implements MoveService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int updateWithOppositeKingStateAfterMove(int move, KingState kingState) {
+        if (kingState == null) {
+            return move;
+        }
+
+        switch (kingState) {
+            case KING_IN_CHECK:
+                return move | (1 << 18);
+            case CHECK_MATE:
+                return move | (1 << 27);
+        }
+
+        return move;
     }
 
     @Override

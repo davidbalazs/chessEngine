@@ -9,6 +9,8 @@ import com.davidbalazs.chess.model.KingState;
 public interface KingService {
     KingState getWhiteKingStateAfterMove(ChessPosition chessPosition, int move);
 
+    KingState getBlackKingStateAfterMove(ChessPosition chessPosition, int move);
+
     boolean isWhiteKingInCheck(ChessPosition chessPosition);
 
     boolean isBlackKingInCheck(ChessPosition chessPosition);

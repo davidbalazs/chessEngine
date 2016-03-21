@@ -7,5 +7,6 @@ import com.davidbalazs.chess.model.ChessPosition;
  */
 public interface PseudoLegalMovesGenerator {
     long getWhiteAttaksBitboard(ChessPosition chessPosition);
+
     long getBlackAttaksBitboard(ChessPosition chessPosition);
 }

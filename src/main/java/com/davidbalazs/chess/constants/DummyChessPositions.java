@@ -29,7 +29,8 @@ public class DummyChessPositions {
     }
 
     public static List<FriendlyPiecePosition> dummyChessPosition3() {
-        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.BLACK_PAWN, 6, 6), new FriendlyPiecePosition(FriendlyPieceType.WHITE_PAWN, 2, 2));
+        return Arrays.asList(new FriendlyPiecePosition(FriendlyPieceType.BLACK_KING, 0, 0), new FriendlyPiecePosition(FriendlyPieceType.WHITE_ROOK, 1, 3)
+                , new FriendlyPiecePosition(FriendlyPieceType.WHITE_KING, 2, 1));
     }
 
     public static List<FriendlyPiecePosition> dummyChessPosition4() {

@@ -1,11 +1,10 @@
 package com.davidbalazs.chess.movegenerator.impl;
 
 import com.davidbalazs.chess.constants.BitboardConstants;
-import com.davidbalazs.chess.model.ChessPosition;
-import com.davidbalazs.chess.model.FriendlyPieceType;
-import com.davidbalazs.chess.model.PiecePosition;
+import com.davidbalazs.chess.model.*;
 import com.davidbalazs.chess.movegenerator.PossibleMovesGenerator;
 import com.davidbalazs.chess.processor.BitBoardProcessor;
+import com.davidbalazs.chess.service.KingService;
 import com.davidbalazs.chess.service.MoveService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -20,6 +19,7 @@ public class RookPossibleMovesGenerator implements PossibleMovesGenerator {
     public static final Logger LOGGER = Logger.getLogger(RookPossibleMovesGenerator.class);
     private BitBoardProcessor bitBoardProcessor;
     private MoveService moveService;
+    private KingService kingService;
 
     @Override
     public TreeSet<Integer> generateWhiteMoves(ChessPosition chessPosition) {
@@ -35,8 +35,6 @@ public class RookPossibleMovesGenerator implements PossibleMovesGenerator {
         TreeSet<Integer> possibleMoves = new TreeSet<>(Collections.reverseOrder());
         for (int i = 0; i < 64; i++) {
             if (((slidingPieceBitboard >> i) & 1L) == 1) {
-
-
                 long possibleMovesBitboardToRight = generatePossibleMovesBitboardToRight(i, chessPosition, opponentBotboard);
                 long possibleMovesBitboardToLeft = generatePossibleMovesBitboardToLeft(i, chessPosition, opponentBotboard);
                 long possibleMovesBitboardToTop = generatePossibleMovesBitboardToTop(i, chessPosition, opponentBotboard);
@@ -92,6 +90,16 @@ public class RookPossibleMovesGenerator implements PossibleMovesGenerator {
                 FriendlyPieceType capturedPiece = bitBoardProcessor.getPieceAtPosition(i % 8, i / 8, chessPosition);
                 int generatedMove = moveService.createMove(pieceType, initialPosition, new PiecePosition(i % 8, i / 8),
                         false, false, null, capturedPiece, null, false, false);
+
+                KingState kingStateAfterMove;
+                if (Player.WHITE.equals(pieceType.getPlayer())) {
+                    kingStateAfterMove = kingService.getBlackKingStateAfterMove(chessPosition, generatedMove);
+                } else {
+                    kingStateAfterMove = kingService.getWhiteKingStateAfterMove(chessPosition, generatedMove);
+                }
+
+                generatedMove = moveService.updateWithOppositeKingStateAfterMove(generatedMove, kingStateAfterMove);
+
                 possibleMoves.add(generatedMove);
                 LOGGER.info("new move:" + moveService.getFriendlyFormat(generatedMove));
             }
@@ -106,5 +114,10 @@ public class RookPossibleMovesGenerator implements PossibleMovesGenerator {
     @Required
     public void setMoveService(MoveService moveService) {
         this.moveService = moveService;
+    }
+
+    @Required
+    public void setKingService(KingService kingService) {
+        this.kingService = kingService;
     }
 }

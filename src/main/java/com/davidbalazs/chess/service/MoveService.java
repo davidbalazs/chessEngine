@@ -1,6 +1,7 @@
 package com.davidbalazs.chess.service;
 
 import com.davidbalazs.chess.model.FriendlyPieceType;
+import com.davidbalazs.chess.model.KingState;
 import com.davidbalazs.chess.model.PiecePosition;
 
 /**
@@ -22,6 +23,8 @@ public interface MoveService {
     FriendlyPieceType getPromotedPiece(int move);
 
     boolean isCheckMate(int move);
+
+    int updateWithOppositeKingStateAfterMove(int move, KingState kingState);
 
     boolean isKingInCheck(int move);
 

@@ -5,18 +5,18 @@ package com.davidbalazs.chess.model;
  */
 public enum FriendlyPieceType {
     NONE('=', 0),
-    WHITE_KING('k', 1),
-    BLACK_KING('K', 2),
-    WHITE_PAWN('p', 3),
-    BLACK_PAWN('P', 4),
-    WHITE_KNIGHT('n', 5),
-    BLACK_KNIGHT('N', 6),
-    WHITE_BISHOP('b', 7),
-    BLACK_BISHOP('B', 8),
-    WHITE_ROOK('r', 9),
-    BLACK_ROOK('R', 10),
-    WHITE_QUEEN('q', 11),
-    BLACK_QUEEN('Q', 12);
+    WHITE_KING('k', 1, Player.WHITE),
+    BLACK_KING('K', 2, Player.BLACK),
+    WHITE_PAWN('p', 3, Player.WHITE),
+    BLACK_PAWN('P', 4, Player.BLACK),
+    WHITE_KNIGHT('n', 5, Player.WHITE),
+    BLACK_KNIGHT('N', 6, Player.BLACK),
+    WHITE_BISHOP('b', 7, Player.WHITE),
+    BLACK_BISHOP('B', 8, Player.BLACK),
+    WHITE_ROOK('r', 9, Player.WHITE),
+    BLACK_ROOK('R', 10, Player.BLACK),
+    WHITE_QUEEN('q', 11, Player.WHITE),
+    BLACK_QUEEN('Q', 12, Player.BLACK);
 
     /**
      * None         0000
@@ -35,7 +35,7 @@ public enum FriendlyPieceType {
      */
     private int numericalRepresentation;
     private char value; //TODO RENAME THIS
-
+    private Player player;
 
     FriendlyPieceType(char value) {
         this.value = value;
@@ -46,8 +46,18 @@ public enum FriendlyPieceType {
         this.numericalRepresentation = numericalRepresentation;
     }
 
+    FriendlyPieceType(char value, int numericalRepresentation, Player player) {
+        this.numericalRepresentation = numericalRepresentation;
+        this.value = value;
+        this.player = player;
+    }
+
     public char getValue() {
         return value;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public int getNumericalRepresentation() {
