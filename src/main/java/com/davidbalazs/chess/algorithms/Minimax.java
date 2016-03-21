@@ -4,6 +4,7 @@ import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.model.MinimaxEntity;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
 import com.davidbalazs.chess.service.FriendlyChessBoardService;
+import com.davidbalazs.chess.service.MoveService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -17,6 +18,7 @@ public class Minimax {
     private MainPossibleMovesGenerator moveGenerator;
     private EvaluationFunction evaluationFunction;
     private FriendlyChessBoardService chessBoardService;
+    private MoveService moveService;
 
     //TODO: delete this
     public long numberOfGeneratedMoves = 0;
@@ -42,6 +44,11 @@ public class Minimax {
         MinimaxEntity maxEntity = new MinimaxEntity(Integer.MIN_VALUE);
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
+            if (moveService.isCheckMate(move)) {
+                LOGGER.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!found check mate!!" + moveService.getFriendlyFormat(move));
+                return new MinimaxEntity(move, Integer.MAX_VALUE);
+            }
+
             minEntity = min(chessBoardService.applyMove(chessPosition, move), depth);
 
             if (minEntity.getEvaluationScore() > maxEntity.getEvaluationScore()) {
@@ -69,6 +76,11 @@ public class Minimax {
         MinimaxEntity minEntity = new MinimaxEntity(Integer.MAX_VALUE);
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
+            if (moveService.isCheckMate(move)) {
+                return new MinimaxEntity(move, Integer.MIN_VALUE);
+            }
+
+
             maxEntity = max(chessBoardService.applyMove(chessPosition, move), depth);
 
             if (maxEntity.getEvaluationScore() < minEntity.getEvaluationScore()) {
@@ -92,5 +104,10 @@ public class Minimax {
     @Required
     public void setChessBoardService(FriendlyChessBoardService chessBoardService) {
         this.chessBoardService = chessBoardService;
+    }
+
+    @Required
+    public void setMoveService(MoveService moveService) {
+        this.moveService = moveService;
     }
 }

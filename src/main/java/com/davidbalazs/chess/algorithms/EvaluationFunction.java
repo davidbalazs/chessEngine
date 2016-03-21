@@ -1,16 +1,19 @@
 package com.davidbalazs.chess.algorithms;
+
 import com.davidbalazs.chess.model.ChessPosition;
+
 /**
  * @author: david.balazs@iquestgroup.com
  */
 public class EvaluationFunction {
     public int evaluate(ChessPosition chessPosition) {
+        //TODO: if white has material advantage on chess table, "remiza" is a mistake and should be evaluated with a negative score.
         return 0;
     }
-        //http://chessprogramming.wikispaces.com/Simplified+evaluation+function
-        //number of pieces on each side
-        //doubled pawns
-        //knights position on table:
+    //http://chessprogramming.wikispaces.com/Simplified+evaluation+function
+    //number of pieces on each side
+    //doubled pawns
+    //knights position on table:
         /*
         // knight
             -50,-40,-30,-30,-30,-30,-40,-50,
@@ -22,7 +25,7 @@ public class EvaluationFunction {
             -40,-20,  0,  5,  5,  0,-20,-40,
             -50,-40,-30,-30,-30,-30,-40,-50,
          */
-        //king:
+    //king:
         /*
         king middle game
             -30,-40,-40,-50,-50,-40,-40,-30,

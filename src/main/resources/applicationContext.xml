@@ -92,6 +92,7 @@
         <property name="moveGenerator" ref="possibleMovesGenerator"/>
         <property name="chessBoardService" ref="friendlyChessBoardService"/>
         <property name="evaluationFunction" ref="evaluationFunction"/>
+        <property name="moveService" ref="moveService"/>
     </bean>
 
     <bean id="evaluationFunction" class="com.davidbalazs.chess.algorithms.EvaluationFunction"/>
