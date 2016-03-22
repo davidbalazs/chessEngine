@@ -37,7 +37,7 @@ public class Main {
 
 //        ChessPosition newChessPosition = friendlyChessBoardService.applyMove(chessPosition, 43302);
 //        friendlyChessBoardService.displayChessBoard(newChessPosition);
-        int nextMoveForWhite = minimax.minimax(chessPosition, 4);
+        int nextMoveForWhite = minimax.minimax(chessPosition, 6);
         System.out.println("next move for white is:" + moveService.getFriendlyFormat(nextMoveForWhite));
 
         long endTime = System.nanoTime();

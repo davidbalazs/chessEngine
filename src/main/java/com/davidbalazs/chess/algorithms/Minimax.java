@@ -80,7 +80,6 @@ public class Minimax {
                 return new MinimaxEntity(move, Integer.MIN_VALUE);
             }
 
-
             maxEntity = max(chessBoardService.applyMove(chessPosition, move), depth);
 
             if (maxEntity.getEvaluationScore() < minEntity.getEvaluationScore()) {
@@ -88,6 +87,7 @@ public class Minimax {
                 minEntity.setMove(move);
             }
         }
+
         return minEntity;
     }
 
