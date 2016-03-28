@@ -88,13 +88,15 @@
 
     <bean id="bitBoardProcessor" class="com.davidbalazs.chess.processor.BitBoardProcessor"/>
 
-    <bean id="minimax" class="com.davidbalazs.chess.algorithms.Minimax">
+    <alias name="minimaxMoveAlgorithm" alias="moveAlgorithm"/>
+    <bean id="minimaxMoveAlgorithm" class="com.davidbalazs.chess.algorithms.impl.MinimaxMoveAlgorithm">
         <property name="moveGenerator" ref="possibleMovesGenerator"/>
         <property name="chessBoardService" ref="friendlyChessBoardService"/>
         <property name="evaluationFunction" ref="evaluationFunction"/>
         <property name="moveService" ref="moveService"/>
     </bean>
 
-    <bean id="evaluationFunction" class="com.davidbalazs.chess.algorithms.EvaluationFunction"/>
+    <alias name="defaultEvaluationFunction" alias="evaluationFunction"/>
+    <bean id="defaultEvaluationFunction" class="com.davidbalazs.chess.algorithms.impl.DefaultEvaluationFunction"/>
 
 </beans>

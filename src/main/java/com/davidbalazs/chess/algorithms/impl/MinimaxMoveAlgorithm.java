@@ -1,5 +1,7 @@
-package com.davidbalazs.chess.algorithms;
+package com.davidbalazs.chess.algorithms.impl;
 
+import com.davidbalazs.chess.algorithms.EvaluationFunction;
+import com.davidbalazs.chess.algorithms.MoveAlgorithm;
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.model.MinimaxEntity;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
@@ -13,8 +15,8 @@ import java.util.TreeSet;
 /**
  * @author: david.balazs@iquestgroup.com
  */
-public class Minimax {
-    public static final Logger LOGGER = Logger.getLogger(Minimax.class);
+public class MinimaxMoveAlgorithm implements MoveAlgorithm {
+    public static final Logger LOGGER = Logger.getLogger(MinimaxMoveAlgorithm.class);
     private MainPossibleMovesGenerator moveGenerator;
     private EvaluationFunction evaluationFunction;
     private FriendlyChessBoardService chessBoardService;
@@ -23,8 +25,14 @@ public class Minimax {
     //TODO: delete this
     public long numberOfGeneratedMoves = 0;
 
-    public int minimax(ChessPosition chessPosition, int depth) {
-        return max(chessPosition, depth).getMove();
+    @Override
+    public int getNextWhiteMove(ChessPosition chessPosition, int virtualPlayerLevel) {
+        return max(chessPosition, virtualPlayerLevel).getMove();
+    }
+
+    @Override
+    public int getNextBlackMove(ChessPosition chessPosition, int virtualPlayerLevel) {
+        return min(chessPosition, virtualPlayerLevel).getMove();
     }
 
     private MinimaxEntity max(ChessPosition chessPosition, int depth) {
@@ -45,7 +53,6 @@ public class Minimax {
         numberOfGeneratedMoves += possibleMoves.size();
         for (int move : possibleMoves) {
             if (moveService.isCheckMate(move)) {
-                LOGGER.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!found check mate!!" + moveService.getFriendlyFormat(move));
                 return new MinimaxEntity(move, Integer.MAX_VALUE);
             }
 

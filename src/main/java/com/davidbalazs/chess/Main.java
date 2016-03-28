@@ -1,6 +1,6 @@
 package com.davidbalazs.chess;
 
-import com.davidbalazs.chess.algorithms.Minimax;
+import com.davidbalazs.chess.algorithms.impl.MinimaxMoveAlgorithm;
 import com.davidbalazs.chess.constants.DummyChessPositions;
 import com.davidbalazs.chess.model.ChessPosition;
 import com.davidbalazs.chess.movegenerator.impl.MainPossibleMovesGenerator;
@@ -23,7 +23,7 @@ public class Main {
 
         MainPossibleMovesGenerator moveGenerator = applicationContext.getBean("possibleMovesGenerator", MainPossibleMovesGenerator.class);
         MoveService moveService = applicationContext.getBean("moveService", DefaultMoveService.class);
-        Minimax minimax = applicationContext.getBean("minimax", Minimax.class);
+        MinimaxMoveAlgorithm minimaxMoveAlgorithm = applicationContext.getBean("minimax", MinimaxMoveAlgorithm.class);
         long startTime = System.nanoTime();
 //        for (int i = 0; i < 10000; i++) {
 //        moveGenerator.generateWhiteMoves(chessPosition);
@@ -37,12 +37,12 @@ public class Main {
 
 //        ChessPosition newChessPosition = friendlyChessBoardService.applyMove(chessPosition, 43302);
 //        friendlyChessBoardService.displayChessBoard(newChessPosition);
-        int nextMoveForWhite = minimax.minimax(chessPosition, 6);
+        int nextMoveForWhite = minimaxMoveAlgorithm.minimax(chessPosition, 6);
         System.out.println("next move for white is:" + moveService.getFriendlyFormat(nextMoveForWhite));
 
         long endTime = System.nanoTime();
         long duration = (endTime - startTime) / 1000000;  //divide by 1000000 to get milliseconds.
         System.out.println("duration:" + duration);
-        System.out.println("number of generated moves:" + minimax.numberOfGeneratedMoves);
+        System.out.println("number of generated moves:" + minimaxMoveAlgorithm.numberOfGeneratedMoves);
     }
 }
